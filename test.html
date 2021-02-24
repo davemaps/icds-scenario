@@ -60,36 +60,31 @@ body { margin: 0; padding: 0; }
                         source: 'seroData',
                         filter: ['has', 'point_count'],
                         paint: {
-                                'circle-color': ['interpolate', ['linear'], ['/', ['get', 'sumSeroA'], ['get', 'point_count']],
-                                        0, '#2c7fb8',
-                                        1, '#edf8b1'
-                                ],
-                                'circle-opacity': ['interpolate', ['linear'], ['/', ['get', 'sumSeroA'], ['get', 'point_count']],
-                                        0, 0.2,
-                                        1, 0.6
-                                ],
                                 'circle-radius': ['interpolate', ['linear'], ['get', 'point_count'],
                                         2, 6,
                                         100, 30
-                                ]
+                                ],
+                                'circle-color': ['interpolate', ['linear'], ['/', ['get', 'sumSeroA'], ['get', 'point_count']],
+                                        0, '#2c7fb8',
+                                        1, '#f8f980'
+                                ],
+                                'circle-opacity': ['interpolate', ['linear'], ['/', ['get', 'sumSeroA'], ['get', 'point_count']],
+                                        0, 0.1,
+                                        1, 0.8
+                                ],
+                                'circle-stroke-color': ['interpolate', ['linear'], ['/', ['get', 'sumSeroA'], ['get', 'point_count']],
+                                        0, '#2c7fb8',
+                                        1, '#f8f980'
+                                ],
+                                'circle-stroke-width': 1,
+                                'circle-stroke-opacity': ['interpolate', ['linear'], ['/', ['get', 'sumSeroA'], ['get', 'point_count']],
+                                        0, 0.5,
+                                        1, 1
+                                ],
                         }
                 },
                 firstSymbolId
         );
-
-        /*
-        map.addLayer({
-            id: 'cluster-count',
-            type: 'symbol',
-            source: 'seroData',
-            filter: ['has', 'point_count'],
-            layout: {
-                'text-field': '{sumSeroA}' + ' / ' + '{point_count}',
-                'text-font': ['DIN Offc Pro Medium', 'Arial Unicode MS Bold'],
-                'text-size': 12
-            }
-        });
-        */
 
         map.addLayer({
             id: 'unclustered-point',
@@ -97,16 +92,25 @@ body { margin: 0; padding: 0; }
             source: 'seroData',
             filter: ['!', ['has', 'point_count']],
             paint: {
+                'circle-radius': 3,
                 'circle-color': ['interpolate', ['linear'], ['/', ['get', 'seroA', ['properties']], 1],
                         0, '#2c7fb8',
-                        1, '#edf8b1'
+                        1, '#f8f980'
                 ],
                 'circle-opacity': ['interpolate', ['linear'], ['/', ['get', 'seroA', ['properties']], 1],
-                        0, 0.2,
-                        1, 0.6
+                        0, 0.1,
+                        1, 0.8
                 ],
-                'circle-radius': 3
-            }
+                'circle-stroke-color': ['interpolate', ['linear'], ['/', ['get', 'seroA', ['properties']], 1],
+                        0, '#2c7fb8',
+                        1, '#f8f980'
+                ],
+                'circle-stroke-width': 1,
+                'circle-stroke-opacity': ['interpolate', ['linear'], ['/', ['get', 'seroA', ['properties']], 1],
+                                        0, 0.5,
+                                        1, 1
+                                ],
+        }
         });
 
         // inspect a cluster on click
@@ -135,6 +139,9 @@ body { margin: 0; padding: 0; }
         map.on('click', 'unclustered-point', function (e) {
             var coordinates = e.features[0].geometry.coordinates.slice();
             var age = e.features[0].properties.age;
+            var seroA = e.features[0].properties.seroA;
+            var seroB = e.features[0].properties.seroB;
+            var seroC = e.features[0].properties.seroC;
 
             // Ensure that if the map is zoomed out such that
             // multiple copies of the feature are visible, the
@@ -146,7 +153,11 @@ body { margin: 0; padding: 0; }
             new mapboxgl.Popup()
                 .setLngLat(coordinates)
                 .setHTML(
-                    'Age: ' + age
+                    '<strong>Single Individual</strong><br>' +
+                    'Age: ' + age + '<br>' +
+                    'SeroA: ' + seroA + '<br>' +
+                    'SeroB: ' + seroB + '<br>' +
+                    'SeroC: ' + seroC
                 )
                 .addTo(map);
         });
