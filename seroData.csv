@@ -1,4 +1,4 @@
-id,age,longitude,latitude,seroA,seroB,seroC
+id,age,lon,lat,seroA,seroB,seroC
 0,38,5.033662204,13.15642848,1,1,1
 1,34,5.033662204,13.15642848,1,1,0
 2,38,5.033662204,13.15642848,1,1,1
