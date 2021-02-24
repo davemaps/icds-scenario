@@ -36,7 +36,7 @@ But of course just as land does not vote (a common problem with election maps), 
 #### Gridded pop. data coded by voronoi cluster
 
 Using gridded population data, we can more accurately represent where people exist with/without seroprevalence.
-This is likely the best visualization when communicating to the public.
+This is likely the best visualization when communicating broadly to the public.
 
 ### Targeting vaccination campaigns
 
@@ -44,10 +44,15 @@ Assume that age does not affect susceptibility differently by location
 
 #### Choropleth by political boundaries
 
+Then, use existing political boundaries for vaccination campaigns
 Calculate cluster data stats by population within political boundaries
 Slider to filter by age
 Pop-up with same chart(s) as above
 Geocoder search to zoom to location
+
+####
+
+Rankings of states/locales most in need of vaccination
 
 ## Tools Used
 
