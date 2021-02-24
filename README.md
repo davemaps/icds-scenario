@@ -30,6 +30,10 @@ Slider to filter by age
 Pop-up with same chart(s) as above
 Geocoder search to zoom to location
 
+### Gridded pop. data coded by voronoi cluster
+
+TK - more info needed here
+
 ## Targeting vaccination campaigns
 
 Assume that age does not affect susceptibility differently by location
@@ -52,6 +56,12 @@ All open source, cross-platform tools
 -csv2geojson
 
 ## Proof of concept for targeting 3 vaccines
+
+# Data
+
+-Sample data
+-Generated seroB, seroC data
+-GRID3 Nigeria National Population Estimates
 
 # References
 
