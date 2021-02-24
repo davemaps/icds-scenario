@@ -71,16 +71,7 @@ body { margin: 0; padding: 0; }
                                 'circle-opacity': ['interpolate', ['linear'], ['/', ['get', 'sumSeroA'], ['get', 'point_count']],
                                         0, 0.1,
                                         1, 0.8
-                                ],
-                                'circle-stroke-color': ['interpolate', ['linear'], ['/', ['get', 'sumSeroA'], ['get', 'point_count']],
-                                        0, '#2c7fb8',
-                                        1, '#f8f980'
-                                ],
-                                'circle-stroke-width': 1,
-                                'circle-stroke-opacity': ['interpolate', ['linear'], ['/', ['get', 'sumSeroA'], ['get', 'point_count']],
-                                        0, 0.5,
-                                        1, 1
-                                ],
+                                ]
                         }
                 },
                 firstSymbolId
@@ -100,16 +91,7 @@ body { margin: 0; padding: 0; }
                 'circle-opacity': ['interpolate', ['linear'], ['/', ['get', 'seroA', ['properties']], 1],
                         0, 0.1,
                         1, 0.8
-                ],
-                'circle-stroke-color': ['interpolate', ['linear'], ['/', ['get', 'seroA', ['properties']], 1],
-                        0, '#2c7fb8',
-                        1, '#f8f980'
-                ],
-                'circle-stroke-width': 1,
-                'circle-stroke-opacity': ['interpolate', ['linear'], ['/', ['get', 'seroA', ['properties']], 1],
-                                        0, 0.5,
-                                        1, 1
-                                ],
+                ]
         }
         });
 
