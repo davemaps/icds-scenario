@@ -95,23 +95,18 @@ body { margin: 0; padding: 0; }
         }
         });
 
-        // inspect a cluster on click
         map.on('click', 'clusters', function (e) {
             var features = map.queryRenderedFeatures(e.point, {
                 layers: ['clusters']
             });
             var clusterId = features[0].properties.cluster_id;
-            map.getSource('seroData').getClusterExpansionZoom(
-                clusterId,
-                function (err, zoom) {
-                    if (err) return;
 
-                    map.easeTo({
-                        center: features[0].geometry.coordinates,
-                        zoom: zoom
-                    });
-                }
-            );
+            new mapboxgl.Popup()
+                .setLngLat(features[0].geometry.coordinates)
+                .setHTML(
+                    'sumSeroA: ' + features[0].properties.sumSeroA
+                )
+                .addTo(map);
         });
 
         // When a click event occurs on a feature in
