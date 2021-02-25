@@ -3,9 +3,9 @@
 Data Viz Scenario for ICDS
 
 Find multimedia to use
--Nigerian flag
--stock footage of vaccination clinic?
--stock footage of locales when zooming to data for a specific place
+- Nigerian flag
+- stock footage of vaccination clinic?
+- stock footage of locales when zooming to data for a specific place
 
 (scroll to overview of new map, then keep scrolling to zoom to specific places)
 
@@ -65,11 +65,11 @@ Rankings of states/locales most in need of vaccination
 
 All open source, cross-platform tools
 
--VS Code
--QGIS to explore data spatially
--Python with Pandas
--Visidata
--csv2geojson
+- VS Code
+- QGIS to explore data spatially
+- Python with Pandas
+- Visidata
+- csv2geojson
 
 These tools make the process reproducible and scriptable, so that the visualizations could automatically be updated when new data is available.
 
@@ -77,11 +77,11 @@ These tools make the process reproducible and scriptable, so that the visualizat
 
 ## Data
 
--Original sample data
--Cleaned sample data with generated seroB, seroC data
--[GRID3 Nigeria National Population Estimates](https://grid3.gov.ng/dataset/national-population-estimates/resources)
+- Original sample data
+- Cleaned sample data with generated seroB, seroC data
+- [GRID3 Nigeria National Population Estimates](https://grid3.gov.ng/dataset/national-population-estimates/resources)
 
 ## References
 
--[Python venv](https://python.land/virtual-environments/virtualenv)
--[Running a simple Python http server](https://developer.mozilla.org/en-US/docs/Learn/Common_questions/set_up_a_local_testing_server)
+- [Python venv](https://python.land/virtual-environments/virtualenv)
+- [Running a simple Python http server](https://developer.mozilla.org/en-US/docs/Learn/Common_questions/set_up_a_local_testing_server)
