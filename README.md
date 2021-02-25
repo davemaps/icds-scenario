@@ -2,6 +2,13 @@
 
 Data Viz Scenario for ICDS
 
+Find multimedia to use
+-Nigerian flag
+-stock footage of vaccination clinic?
+-stock footage of locales when zooming to data for a specific place
+
+(scroll to overview of new map, then keep scrolling to zoom to specific places)
+
 ## Visualizations – scrollytelling site
 
 ### Actual cluster data
