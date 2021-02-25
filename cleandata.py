@@ -23,14 +23,14 @@ with open ('sampleDataClean.csv', 'w') as file_new:
 df_sample_data = pandas.read_csv('sampleDataClean.csv')
 
 # rename columns
-df_sample_data.rename(columns = {'outcome':'seroA', 'X':'long', 'Y':'lat'}, inplace = True)
+df_sample_data.rename(columns = {'outcome':'sero', 'X':'long', 'Y':'lat'}, inplace = True)
 
 # reorder columns
-df_final_data = df_sample_data[['age', 'long', 'lat', 'seroA']]
+df_final_data = df_sample_data[['age', 'long', 'lat', 'sero']]
 
 # fill new seroprevalence columns with random data
-df_final_data['seroB'] = numpy.random.randint(0,2, size=len(df_final_data))
-df_final_data['seroC'] = numpy.random.randint(0,2, size=len(df_final_data))
+#df_final_data['seroB'] = numpy.random.randint(0,2, size=len(df_final_data))
+#df_final_data['seroC'] = numpy.random.randint(0,2, size=len(df_final_data))
 
 # print for visual confirmation, then save out to new file
 print(df_final_data)
@@ -44,9 +44,7 @@ def data2geojson(df):
                                                 X["lat"])),
             properties=dict(id=X["id"],
                             age=X["age"],
-                            seroA=X["seroA"],
-                            seroB=X["seroB"],
-                            seroC=X["seroC"])))
+                            sero=X["sero"])))
     df.apply(insert_features, axis=1)
     with open('seroData.geojson', 'w', encoding='utf8') as fp:
         geojson.dump(geojson.FeatureCollection(features), fp, sort_keys=True, ensure_ascii=False)

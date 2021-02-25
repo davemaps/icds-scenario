@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Clusters</title>
+<meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no">
+<link href="https://api.mapbox.com/mapbox-gl-js/v2.1.1/mapbox-gl.css" rel="stylesheet">
+<script src="https://api.mapbox.com/mapbox-gl-js/v2.1.1/mapbox-gl.js"></script>
+<style>
+body { margin: 0; padding: 0; }
+#map { position: absolute; top: 0; bottom: 0; width: 100%; }
+</style>
+</head>
+<body>
+<div id="map"></div>
+
+<script>
+        mapboxgl.accessToken = 'pk.eyJ1IjoiZGF2ZW1jbGF1Z2hsaW4iLCJhIjoiY2p4bzBlaGJ5MDF3NzNscXA5MnJyeW4xcyJ9.RlsTLBiHzI-gxBHMKZvWCg';
+        var map = new mapboxgl.Map({
+                container: 'map',
+                style: 'mapbox://styles/mapbox/light-v10',
+                center: [8, 9],
+                zoom: 6
+        });
+
+    map.addControl(new mapboxgl.NavigationControl());
+
+    map.on('load', function () {
+            // Find the index of the first symbol layer in the map style
+            // so that the labels can be added over the point clusters
+                var layers = map.getStyle().layers;
+                var firstSymbolId;
+                for (var i = 0; i < layers.length; i++) {
+                        if (layers[i].type === 'symbol') {
+                                firstSymbolId = layers[i].id;
+                                break;
+                        }
+                }
+
+        // Add a new source from our GeoJSON data and
+        // set the 'cluster' option to true. GL-JS will
+        // add the point_count property to your source data.
+        map.addSource('seroData', {
+            type: 'geojson',
+            // Point to GeoJSON data. This example visualizes all M1.0+ earthquakes
+            // from 12/22/15 to 1/21/16 as logged by USGS' Earthquake hazards program.
+            data: 'seroDatamin.geojson',
+            cluster: true,
+            clusterMaxZoom: 22, // Max zoom to cluster points on
+            clusterRadius: 1, // Radius of each cluster when clustering points (defaults to 50)
+            clusterProperties: {
+                sumSero: ["+", ["number", ["get", "sero"], 0]]
+            }
+        });
+
+        map.addLayer(
+                {
+                        id: 'clusters',
+                        type: 'circle',
+                        source: 'seroData',
+                        filter: ['has', 'point_count'],
+                        paint: {
+                                'circle-radius': ['interpolate', ['linear'], ['get', 'point_count'],
+                                        2, 6,
+                                        100, 30
+                                ],
+                                'circle-color': ['interpolate', ['linear'], ['/', ['get', 'sumSero'], ['get', 'point_count']],
+                                        0, '#2c7fb8',
+                                        1, '#f8f980'
+                                ],
+                                'circle-opacity': ['interpolate', ['linear'], ['/', ['get', 'sumSero'], ['get', 'point_count']],
+                                        0, 0.1,
+                                        1, 0.8
+                                ]
+                        }
+                },
+                firstSymbolId
+        );
+
+        map.addLayer({
+            id: 'unclustered-point',
+            type: 'circle',
+            source: 'seroData',
+            filter: ['!', ['has', 'point_count']],
+            paint: {
+                'circle-radius': 3,
+                'circle-color': ['interpolate', ['linear'], ['/', ['get', 'sero', ['properties']], 1],
+                        0, '#2c7fb8',
+                        1, '#f8f980'
+                ],
+                'circle-opacity': ['interpolate', ['linear'], ['/', ['get', 'sero', ['properties']], 1],
+                        0, 0.1,
+                        1, 0.8
+                ]
+        }
+        });
+
+        map.on('click', 'clusters', function (e) {
+            var features = map.queryRenderedFeatures(e.point, {
+                layers: ['clusters']
+            });
+            var clusterId = features[0].properties.cluster_id;
+
+            new mapboxgl.Popup()
+                .setLngLat(features[0].geometry.coordinates)
+                .setHTML(
+                    'sumSero: ' + features[0].properties.sumSero
+                )
+                .addTo(map);
+        });
+
+        // When a click event occurs on a feature in
+        // the unclustered-point layer, open a popup at
+        // the location of the feature, with
+        // description HTML from its properties.
+        map.on('click', 'unclustered-point', function (e) {
+            var coordinates = e.features[0].geometry.coordinates.slice();
+            var age = e.features[0].properties.age;
+            var sero = e.features[0].properties.sero;
+
+            // Ensure that if the map is zoomed out such that
+            // multiple copies of the feature are visible, the
+            // popup appears over the copy being pointed to.
+            while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
+                coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
+            }
+
+            new mapboxgl.Popup()
+                .setLngLat(coordinates)
+                .setHTML(
+                    '<strong>Single Individual</strong><br>' +
+                    'Age: ' + age + '<br>' +
+                    'Sero: ' + sero
+                )
+                .addTo(map);
+        });
+
+        map.on('mouseenter', 'clusters', function () {
+            map.getCanvas().style.cursor = 'pointer';
+        });
+        map.on('mouseenter', 'unclustered-point', function () {
+            map.getCanvas().style.cursor = 'pointer';
+        });
+        map.on('mouseleave', 'clusters', function () {
+            map.getCanvas().style.cursor = '';
+        });
+        map.on('mouseleave', 'unclustered-point', function () {
+            map.getCanvas().style.cursor = '';
+        });
+    });
+</script>
+
+</body>
+</html>

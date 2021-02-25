@@ -33,8 +33,14 @@ Our first attempt to generalize the clusters across a wider area
 #### Voronoi
 
 Cut up country into slices by cluster
-Bivariate choropleth, or same colors as circles map?
-Slider to filter by age
+Colors same as cluster circles map
+Binned by age:
+
+- count, sero
+- 25-29count, 25-29sero
+- 30-34count, 30-34sero
+- 35-39count, 35-39sero
+
 Pop-up with same chart(s) as above
 Geocoder search to zoom to location
 
