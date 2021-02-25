@@ -2,7 +2,8 @@
 
 Data Viz Scenario for ICDS
 
-Find multimedia to use
+Find multimedia to use:
+
 - Nigerian flag
 - stock footage of vaccination clinic?
 - stock footage of locales when zooming to data for a specific place
@@ -75,6 +76,20 @@ These tools make the process reproducible and scriptable, so that the visualizat
 
 ### Proof of concept for targeting 3 vaccines
 
+## Timeline
+
+### Monday
+
+Explore data and make plan, starting with envisioned final product
+
+### Tuesday
+
+Write script to clean and convert data
+
+### Wednesday
+
+Code the maps and discover gridded population data by age (YAY!)
+
 ## Data
 
 - Original sample data
@@ -85,3 +100,4 @@ These tools make the process reproducible and scriptable, so that the visualizat
 
 - [Python venv](https://python.land/virtual-environments/virtualenv)
 - [Running a simple Python http server](https://developer.mozilla.org/en-US/docs/Learn/Common_questions/set_up_a_local_testing_server)
+- [Getting Mapbox labels above features](https://docs.mapbox.com/mapbox-gl-js/example/geojson-layer-in-stack/)

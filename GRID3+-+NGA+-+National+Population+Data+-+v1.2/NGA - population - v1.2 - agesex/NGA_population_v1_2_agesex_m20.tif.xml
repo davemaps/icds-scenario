@@ -1,0 +1,287 @@
+<?xml version="1.0"?>
+<metadata>
+ <idinfo>
+  <citation>
+   <citeinfo>
+    <origin>WorldPop (School of Geography and Environmental Science, University of Southampton).</origin>
+    <pubdate>2020-03-26</pubdate>
+    <title>Bottom-up gridded population estimates for individual age-sex groups in Nigeria, version 1.2.1.</title>
+    <geoform>GeoTiff</geoform>
+    <pubinfo>
+     <pubplace>Southampton, UK</pubplace>
+     <publish>WorldPop Research Group, University of Southampton</publish>
+    </pubinfo>
+    <othercit>DOI:10.5258/SOTON/WP00661</othercit>
+    <onlink>https://dx.doi.org/10.5258/SOTON/WP00661
+https://wopr.worldpop.org</onlink>
+   </citeinfo>
+  </citation>
+  <descript>
+   <abstract>This geotiff raster contains estimates of total population size in individual age-sex groups for each 100 m grid cell across Nigeria. 
+The values are the mean of the posterior probability distribution for the predicted population size in each grid cell. 
+NA values represent areas that were mapped as unsettled by LandScanHD v1.1 (Oak Ridge National Laboratory 2018). 
+These data are stored as floating point numbers rather than integers to avoid rounding errors in aggregated population totals for larger areas.
+The file names refer to the age-sex group represented by the raster. 
+Filenames beginning with “f” are female populations and filenames beginning with “m” are male populations. 
+The age group labels refer to the first year of the age range. 
+For example: “f0” is females less than one year old. 
+“f1” is females 1 to 4 years old. 
+“f5” is females 5 to 9 years old. 
+“f10” is females 10 to 14 years old. 
+This pattern continues for each 5 year interval up to 80. 
+“f80” is females greater than 80 years old. 
+The labelling is the same for males: “m0”, “m1”, “m5”, “m10”, … , “m80”.</abstract>
+   <purpose>This geotiff raster provides population estimates for individual age-sex groups within 100 m grid cells across Nigeria.</purpose>
+   <supplinf/>
+  </descript>
+  <timeperd>
+   <timeinfo>
+    <rngdates>
+     <begdate>2016</begdate>
+     <enddate>2017</enddate>
+    </rngdates>
+   </timeinfo>
+   <current/>
+  </timeperd>
+  <status>
+   <progress>Complete</progress>
+   <update>Periodic</update>
+  </status>
+  <spdom>
+   <bounding>
+    <westbc>2.665001504</westbc>
+    <eastbc>14.683525504</eastbc>
+    <northbc>13.895831979</northbc>
+    <southbc>4.266351979</southbc>
+   </bounding>
+  </spdom>
+  <keywords>
+   <theme>
+    <themekt>None</themekt>
+    <themekey>Nigeria, gridded population estimates, demographics</themekey>
+   </theme>
+   <theme>
+    <themekt>ISO 19115 Topic Category</themekt>
+    <themekey>Human population, Sub-national, Spatial dataset, Bayesian statistics</themekey>
+   </theme>
+  </keywords>
+  <accconst>These data may be distributed using a Creative Commons Attribution Share-Alike 4.0 License.</accconst>
+  <useconst>These data may be distributed using a Creative Commons Attribution Share-Alike 4.0 License.</useconst>
+  <ptcontac>
+   <cntinfo>
+    <cntorgp>
+     <cntorg>WorldPop Research Group, University of Southampton</cntorg>
+     <cntper>Doug Leasure</cntper>
+    </cntorgp>
+    <cntaddr>
+     <addrtype>email</addrtype>
+     <address>release@worldpop.org</address>
+     <city>Southampton</city>
+     <state>Hampshire</state>
+     <postal>SO17 1BJ</postal>
+     <country>UNITED KINGDOM</country>
+    </cntaddr>
+    <cntvoice>Contact_Voice_Telephone</cntvoice>
+   </cntinfo>
+  </ptcontac>
+  <browse>
+   <browsen>None.</browsen>
+   <browsed>None.</browsed>
+   <browset>None.</browset>
+  </browse>
+  <datacred>These population estimates were produced by the WorldPop Research Group at the University of Southampton. 
+This work was part of the GRID3 project with funding from the Bill and Melinda Gates Foundation and the United Kingdom’s Department for International Development (OPP1182408). 
+Project partners included the United Nations Population Fund, Columbia University’s Center for International Earth Science Information Network, and the Flowminder Foundation. 
+These data may be distributed using a Creative Commons Attribution Share-Alike 4.0 License. 
+Contact release@worldpop.org for more information.</datacred>
+  <native>R version 3.6.3 (2020-02-29) running on Windows &gt;= 8 x64</native>
+ </idinfo>
+ <spref>
+  <horizsys>
+   <geograph>
+    <latres>0.001</latres>
+    <longres>0.001</longres>
+    <geogunit>Decimal degrees</geogunit>
+   </geograph>
+   <geodetic>
+    <horizdn>EPSG:4326</horizdn>
+    <ellips>WGS_1984</ellips>
+    <semiaxis>6378137</semiaxis>
+    <denflat>298.257223563</denflat>
+   </geodetic>
+  </horizsys>
+ </spref>
+ <distinfo>
+  
+  <distrib>
+   
+   <cntinfo>
+    
+    <cntpos></cntpos>
+    <cntorgp>
+     
+     <cntorg></cntorg>
+    </cntorgp>
+   </cntinfo>
+  </distrib>
+  <stdorder>
+   
+   <digform>
+    
+    <digtopt>
+     
+     <onlinopt>
+      
+      <accinstr></accinstr>
+      <computer>
+       
+       <networka></networka>
+      </computer>
+      <oncomp></oncomp>
+     </onlinopt>
+    </digtopt>
+    <digtinfo>
+     
+     <formname></formname>
+     <filedec></filedec>
+     <formcont></formcont>
+     <formvern></formvern>
+     <transize></transize>
+    </digtinfo>
+   </digform>
+   <fees></fees>
+  </stdorder>
+  <distliab></distliab>
+  <resdesc></resdesc>
+ </distinfo>
+ <eainfo>
+  
+  <detailed>
+   
+   <attr>
+    
+    <attrlabl></attrlabl>
+    <attrdef></attrdef>
+    <attrdefs></attrdefs>
+    <attrdomv>
+     
+     <rdom>
+      
+      <rdommin></rdommin>
+      <attrmres></attrmres>
+      <attrunit></attrunit>
+      <rdommax></rdommax>
+     </rdom>
+    </attrdomv>
+    <attrmfrq></attrmfrq>
+    <attrvai>
+     
+     <attrva></attrva>
+     <attrvae></attrvae>
+    </attrvai>
+    <begdatea></begdatea>
+    <enddatea></enddatea>
+   </attr>
+   <enttyp>
+    
+    <enttypl></enttypl>
+    <enttypd></enttypd>
+    <enttypds></enttypds>
+   </enttyp>
+  </detailed>
+  <overview>
+   
+   <eadetcit></eadetcit>
+   <eaover></eaover>
+  </overview>
+ </eainfo>
+ <dataqual>
+  
+  <attracc>
+   
+   <attraccr></attraccr>
+  </attracc>
+  <lineage>
+   
+   <srcinfo>
+    
+    <srctime>
+     
+     <timeinfo>
+      
+      <sngdate>
+       
+       <caldate></caldate>
+      </sngdate>
+     </timeinfo>
+     <srccurr></srccurr>
+    </srctime>
+    <srccite>
+     
+     <citeinfo>
+      
+      <origin></origin>
+     </citeinfo>
+    </srccite>
+    <srccitea></srccitea>
+    <srccontr></srccontr>
+    <srcscale></srcscale>
+    <typesrc></typesrc>
+   </srcinfo>
+   <procstep>
+    
+    <procdate></procdate>
+    <procdesc></procdesc>
+   </procstep>
+  </lineage>
+  <complete></complete>
+  <posacc>
+   
+   <horizpa>
+    
+    <horizpar></horizpar>
+   </horizpa>
+   <vertacc>
+    
+    <vertaccr></vertaccr>
+   </vertacc>
+  </posacc>
+  <logic></logic>
+ </dataqual>
+ <spdoinfo>
+  
+  <direct></direct>
+  <indspref></indspref>
+  <ptvctinf>
+   
+   <sdtsterm>
+    
+    <ptvctcnt></ptvctcnt>
+    <sdtstype></sdtstype>
+   </sdtsterm>
+  </ptvctinf>
+ </spdoinfo>
+ <metainfo>
+  
+  <metac></metac>
+  <metd></metd>
+  <metc>
+   
+   <cntinfo>
+    
+    <cntorgp>
+     
+     <cntorg></cntorg>
+    </cntorgp>
+   </cntinfo>
+  </metc>
+  <metsi>
+   
+   <metscs></metscs>
+   <metshd></metshd>
+  </metsi>
+  <metstdn></metstdn>
+  <metstdv></metstdv>
+  <metuc></metuc>
+ </metainfo>
+</metadata>
