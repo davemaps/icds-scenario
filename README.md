@@ -57,9 +57,9 @@ Slider to filter by age
 Pop-up with same chart(s) as above
 Geocoder search to zoom to location
 
-####
+#### Rankings of states/locales most in need of vaccination
 
-Rankings of states/locales most in need of vaccination
+update with age range filter
 
 ## Tools Used
 
