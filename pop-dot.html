@@ -18,12 +18,43 @@ body { margin: 0; padding: 0; }
         mapboxgl.accessToken = 'pk.eyJ1IjoiZGF2ZW1jbGF1Z2hsaW4iLCJhIjoiY2p4bzBlaGJ5MDF3NzNscXA5MnJyeW4xcyJ9.RlsTLBiHzI-gxBHMKZvWCg';
         var map = new mapboxgl.Map({
                 container: 'map',
-                style: 'mapbox://styles/davemclaughlin/ckllc55uf0w5s17qnhlfomaua',
+                style: 'mapbox://styles/mapbox/dark-v10',
                 center: [8, 9],
                 zoom: 6
         });
 
-    map.addControl(new mapboxgl.NavigationControl());
+        map.addControl(new mapboxgl.NavigationControl());
+
+        map.on('load', function () {
+
+            var layers = map.getStyle().layers;
+            var firstSymbolId;
+            for (var i = 0; i < layers.length; i++) {
+                    if (layers[i].type === 'symbol') {
+                            firstSymbolId = layers[i].id;
+                            break;
+                    }
+            }
+
+            map.addSource('popDot', {
+                type: 'raster',
+                url: 'mapbox://davemclaughlin.839tfkdk'
+            });
+
+            map.addSource('popDot35-39', {
+                type: 'raster',
+                url: 'mapbox://davemclaughlin.b4duh1ro'
+            });
+
+            map.addLayer( {
+                    id: "popDotLayer",
+                    type: "raster",
+                    source: "popDot"
+                },
+                firstSymbolId
+            );
+        
+        });
 
 </script>
 
