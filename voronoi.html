@@ -40,16 +40,17 @@ body { margin: 0; padding: 0; }
         // Add a new source from our GeoJSON data and
         // set the 'cluster' option to true. GL-JS will
         // add the point_count property to your source data.
-        map.addSource('voronoiStatsData', {
-            type: 'geojson',
-            data: 'voronoi-stats.geojson'
+        map.addSource('voronoiStatsTotal', {
+            type: 'vector',
+            url: 'mapbox://davemclaughlin.cklljqxhv0bxb21nqurwzll79-86him'
         });
 
         map.addLayer(
                 {
-                        id: 'voronoiStatsData',
+                        id: 'voronoiStatsTotal',
                         type: 'fill',
-                        source: 'voronoiStatsData',
+                        source: 'voronoiStatsTotal',
+                        'source-layer': 'voronoi-stats-total',
                         paint: {
                                 'fill-color': ['interpolate', ['linear'], ['/', ['get', 'sero'], ['get', 'count']],
                                         0, '#2c7fb8',
@@ -64,7 +65,7 @@ body { margin: 0; padding: 0; }
                 firstSymbolId
         );
 
-        map.on('click', 'voronoiStatsData', function (e) {
+        map.on('click', 'voronoiStatsTotal', function (e) {
             new mapboxgl.Popup()
                 .setLngLat(e.lngLat)
                 .setHTML(
@@ -76,7 +77,7 @@ body { margin: 0; padding: 0; }
         });
 
         /*
-        map.on('click', 'voronoiStatsData', function (e) {
+        map.on('click', 'voronoiStatsTotal', function (e) {
             var coordinates = e.features[0].geometry.coordinates;
             var count = e.features[0].properties.count;
             var sero = e.features[0].properties.sero;
@@ -98,10 +99,10 @@ body { margin: 0; padding: 0; }
         });
         */
 
-        map.on('mouseenter', 'voronoiStatsData', function () {
+        map.on('mouseenter', 'voronoiStatsTotal', function () {
             map.getCanvas().style.cursor = 'pointer';
         });
-        map.on('mouseleave', 'voronoiStatsData', function () {
+        map.on('mouseleave', 'voronoiStatsTotal', function () {
             map.getCanvas().style.cursor = '';
         });
     });
