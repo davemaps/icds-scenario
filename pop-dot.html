@@ -12,60 +12,70 @@ body { margin: 0; padding: 0; }
 </style>
 </head>
 <body>
+<script src="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.5.1/mapbox-gl-geocoder.min.js"></script>
+<link rel="stylesheet" href="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.5.1/mapbox-gl-geocoder.css" type="text/css">
+<!-- Promise polyfill script required to use Mapbox GL Geocoder in IE 11 -->
+<script src="https://cdn.jsdelivr.net/npm/es6-promise@4/dist/es6-promise.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/es6-promise@4/dist/es6-promise.auto.min.js"></script>
 <div id="map"></div>
 
 <script>
-        mapboxgl.accessToken = 'pk.eyJ1IjoiZGF2ZW1jbGF1Z2hsaW4iLCJhIjoiY2p4bzBlaGJ5MDF3NzNscXA5MnJyeW4xcyJ9.RlsTLBiHzI-gxBHMKZvWCg';
-        var map = new mapboxgl.Map({
-                container: 'map',
-                style: 'mapbox://styles/mapbox/dark-v10',
-                center: [8, 9],
-                zoom: 6
-        });
+    mapboxgl.accessToken = 'pk.eyJ1IjoiZGF2ZW1jbGF1Z2hsaW4iLCJhIjoiY2p4bzBlaGJ5MDF3NzNscXA5MnJyeW4xcyJ9.RlsTLBiHzI-gxBHMKZvWCg';
+    var map = new mapboxgl.Map({
+        container: 'map',
+        style: 'mapbox://styles/mapbox/dark-v10',
+        center: [8, 9],
+        zoom: 6
+    });
 
-        map.addControl(new mapboxgl.NavigationControl());
+    map.addControl(
+        new MapboxGeocoder({
+            accessToken: mapboxgl.accessToken,
+            countries: 'ng',
+            mapboxgl: mapboxgl
+        })
+    );
+    map.addControl(new mapboxgl.NavigationControl());
 
-        map.on('load', function () {
-
-            var layers = map.getStyle().layers;
-            var firstSymbolId;
-            for (var i = 0; i < layers.length; i++) {
-                    if (layers[i].type === 'symbol') {
-                            firstSymbolId = layers[i].id;
-                            break;
-                    }
+    map.on('load', function () {
+        var layers = map.getStyle().layers;
+        var firstSymbolId;
+        for (var i = 0; i < layers.length; i++) {
+            if (layers[i].type === 'symbol') {
+                firstSymbolId = layers[i].id;
+                break;
             }
+        }
 
-            map.addSource('popDot', {
-                type: 'raster',
-                url: 'mapbox://davemclaughlin.839tfkdk'
-            });
-
-            map.addSource('popDot25-29', {
-                type: 'raster',
-                url: 'mapbox://davemclaughlin.5bmujd6n'
-            });
-
-            map.addSource('popDot30-34', {
-                type: 'raster',
-                url: 'mapbox://davemclaughlin.bggi2i25'
-            });
-
-            map.addSource('popDot35-39', {
-                type: 'raster',
-                url: 'mapbox://davemclaughlin.b4duh1ro'
-            });
-
-            map.addLayer( {
-                    id: "popDotLayer",
-                    type: "raster",
-                    source: "popDot"
-                },
-                firstSymbolId
-            );
-        
+        map.addSource('popDot', {
+            type: 'raster',
+            url: 'mapbox://davemclaughlin.839tfkdk'
         });
 
+        map.addSource('popDot25-29', {
+            type: 'raster',
+            url: 'mapbox://davemclaughlin.5bmujd6n'
+        });
+
+        map.addSource('popDot30-34', {
+            type: 'raster',
+            url: 'mapbox://davemclaughlin.bggi2i25'
+        });
+
+        map.addSource('popDot35-39', {
+            type: 'raster',
+            url: 'mapbox://davemclaughlin.b4duh1ro'
+        });
+
+        map.addLayer( {
+                id: "popDotLayer",
+                type: "raster",
+                source: "popDot"
+            },
+            firstSymbolId
+        );
+        
+    });
 </script>
 
 </body>

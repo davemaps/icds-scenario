@@ -12,30 +12,42 @@ body { margin: 0; padding: 0; }
 </style>
 </head>
 <body>
+<script src="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.5.1/mapbox-gl-geocoder.min.js"></script>
+<link rel="stylesheet" href="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.5.1/mapbox-gl-geocoder.css" type="text/css">
+<!-- Promise polyfill script required to use Mapbox GL Geocoder in IE 11 -->
+<script src="https://cdn.jsdelivr.net/npm/es6-promise@4/dist/es6-promise.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/es6-promise@4/dist/es6-promise.auto.min.js"></script>    
 <div id="map"></div>
 
 <script>
-        mapboxgl.accessToken = 'pk.eyJ1IjoiZGF2ZW1jbGF1Z2hsaW4iLCJhIjoiY2p4bzBlaGJ5MDF3NzNscXA5MnJyeW4xcyJ9.RlsTLBiHzI-gxBHMKZvWCg';
-        var map = new mapboxgl.Map({
-                container: 'map',
-                style: 'mapbox://styles/mapbox/light-v10',
-                center: [8, 9],
-                zoom: 6
-        });
+    mapboxgl.accessToken = 'pk.eyJ1IjoiZGF2ZW1jbGF1Z2hsaW4iLCJhIjoiY2p4bzBlaGJ5MDF3NzNscXA5MnJyeW4xcyJ9.RlsTLBiHzI-gxBHMKZvWCg';
+    var map = new mapboxgl.Map({
+        container: 'map',
+        style: 'mapbox://styles/mapbox/light-v10',
+        center: [8, 9],
+        zoom: 6
+    });
 
-        var zoomThreshold = 6.5;
+    var zoomThreshold = 6.5;
 
+    map.addControl(
+        new MapboxGeocoder({
+            accessToken: mapboxgl.accessToken,
+            countries: 'ng',
+            mapboxgl: mapboxgl
+        })
+    );
     map.addControl(new mapboxgl.NavigationControl());
 
     map.on('load', function () {
-                var layers = map.getStyle().layers;
-                var firstSymbolId;
-                for (var i = 0; i < layers.length; i++) {
-                        if (layers[i].type === 'symbol') {
-                                firstSymbolId = layers[i].id;
-                                break;
-                        }
-                }
+        var layers = map.getStyle().layers;
+        var firstSymbolId;
+        for (var i = 0; i < layers.length; i++) {
+            if (layers[i].type === 'symbol') {
+                firstSymbolId = layers[i].id;
+                break;
+            }
+        }
 
         map.addSource('admin-l2', {
             type: 'vector',
@@ -48,51 +60,50 @@ body { margin: 0; padding: 0; }
         });
 
         map.addLayer(
-                {
-                        id: 'admin-l2',
-                        type: 'fill',
-                        source: 'admin-l2',
-                        'source-layer': 'admin-l2',
-                        maxzoom: zoomThreshold,
-                        paint: {
-                                'fill-color': ['interpolate', ['linear'], ['/', ['get', 'seroTot'], ['get', 'countTot']],
-                                        0, '#2c7fb8',
-                                        1, '#f8f980'
-                                ],
-                                'fill-opacity': ['step', ['get', 'countTot'],
-                                        0,
-                                        1,
-                                        0.8
-                                ],
-                                'fill-outline-color': '#eee'
-                        }
-                },
-                firstSymbolId
+            {
+                id: 'admin-l2',
+                type: 'fill',
+                source: 'admin-l2',
+                'source-layer': 'admin-l2',
+                maxzoom: zoomThreshold,
+                paint: {
+                    'fill-color': ['interpolate', ['linear'], ['/', ['get', 'seroTot'], ['get', 'countTot']],
+                        0, '#2c7fb8',
+                        1, '#f8f980'
+                    ],
+                    'fill-opacity': ['step', ['get', 'countTot'],
+                        0,
+                        1,
+                        0.8
+                    ],
+                    'fill-outline-color': '#eee'
+                }
+            },
+            firstSymbolId
         );
 
         map.addLayer(
-                {
-                        id: 'admin-l3',
-                        type: 'fill',
-                        source: 'admin-l3',
-                        'source-layer': 'admin-l3',
-                        minzoom: zoomThreshold,
-                        paint: {
-                                'fill-color': ['interpolate', ['linear'], ['/', ['get', 'seroTot'], ['get', 'countTot']],
-                                        0, '#2c7fb8',
-                                        1, '#f8f980'
-                                ],
-                                'fill-opacity': ['step', ['get', 'countTot'],
-                                        0,
-                                        1,
-                                        0.8
-                                ],
-                                'fill-outline-color': '#eee'
-                        }
-                },
-                firstSymbolId
+            {
+                id: 'admin-l3',
+                type: 'fill',
+                source: 'admin-l3',
+                'source-layer': 'admin-l3',
+                minzoom: zoomThreshold,
+                paint: {
+                    'fill-color': ['interpolate', ['linear'], ['/', ['get', 'seroTot'], ['get', 'countTot']],
+                        0, '#2c7fb8',
+                        1, '#f8f980'
+                    ],
+                    'fill-opacity': ['step', ['get', 'countTot'],
+                        0,
+                        1,
+                        0.8
+                    ],
+                    'fill-outline-color': '#eee'
+                }
+            },
+            firstSymbolId
         );
-
 
         map.on('click', 'admin-l2', function (e) {
             var msgHeading = '<strong>' + e.features[0].properties.statename + '</strong> <em>' + e.features[0].properties.capcity + '</em><br>';
