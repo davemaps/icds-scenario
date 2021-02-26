@@ -40,7 +40,7 @@ body { margin: 0; padding: 0; }
         // Add a new source from our GeoJSON data and
         // set the 'cluster' option to true. GL-JS will
         // add the point_count property to your source data.
-        map.addSource('seroClusters', {
+        map.addSource('clustersData', {
             type: 'geojson',
             data: 'clustersData.geojson',
             cluster: true,
@@ -55,7 +55,7 @@ body { margin: 0; padding: 0; }
                 {
                         id: 'clusters',
                         type: 'circle',
-                        source: 'seroClusters',
+                        source: 'clustersData',
                         filter: ['has', 'point_count'],
                         paint: {
                                 'circle-radius': ['interpolate', ['linear'], ['get', 'point_count'],
@@ -78,7 +78,7 @@ body { margin: 0; padding: 0; }
         map.addLayer({
             id: 'unclustered-point',
             type: 'circle',
-            source: 'seroClusters',
+            source: 'clustersData',
             filter: ['!', ['has', 'point_count']],
             paint: {
                 'circle-radius': 3,
