@@ -102,7 +102,8 @@ body { margin: 0; padding: 0; }
             new mapboxgl.Popup()
                 .setLngLat(features[0].geometry.coordinates)
                 .setHTML(
-                    'sumSero: ' + features[0].properties.sumSero
+                    '<strong>' + features[0].properties.point_count + ' Individuals</strong><br>' +
+                    'Seroprevalence: ' + (features[0].properties.sumSero / features[0].properties.point_count).toLocaleString("en", {style: "percent"})
                 )
                 .addTo(map);
         });
@@ -114,7 +115,12 @@ body { margin: 0; padding: 0; }
         map.on('click', 'unclustered-point', function (e) {
             var coordinates = e.features[0].geometry.coordinates.slice();
             var age = e.features[0].properties.age;
-            var sero = e.features[0].properties.sero;
+            var sero;
+            if (e.features[0].properties.sero == 1) {
+                sero = 'Yes';
+            } else {
+                sero = 'No';
+            }
 
             // Ensure that if the map is zoomed out such that
             // multiple copies of the feature are visible, the
@@ -128,7 +134,7 @@ body { margin: 0; padding: 0; }
                 .setHTML(
                     '<strong>Single Individual</strong><br>' +
                     'Age: ' + age + '<br>' +
-                    'Sero: ' + sero
+                    'Seroprevalence: ' + sero
                 )
                 .addTo(map);
         });
