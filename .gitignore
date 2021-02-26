@@ -5,3 +5,4 @@ share/
 pip-selfcheck.json
 pyvenv.cfg
 .vscode/
+*.mp4
