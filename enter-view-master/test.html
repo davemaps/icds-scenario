@@ -1,0 +1,394 @@
+<!doctype html>
+<html lang='en'>
+	<head>
+	    <title>test</title>
+        <meta name='viewport' content='width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no'>
+        <meta charset='utf-8'>
+        <meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+        <style>
+			html, body {
+				height: 100%;
+			}
+			body {
+				/*background-color: #2c7fb8;*/
+				background-color: black;
+				font-family: 'Newsreader', serif;
+				font-weight: 300;
+				/*font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;*/
+				font-size: 1.3rem;
+				line-height: 1.8rem;
+				color: #2e2e2e;
+				margin: 0;
+			}
+			#header-hero {
+				display: flex;
+				justify-content: center;
+				align-items: center;
+				height: 100%;
+			}
+			header {
+				text-align: center;
+			}
+			header h1 {
+				/*color: #2c7fb8;*/
+				color: #f4f4f2;
+				font-family: 'Alfa Slab One';
+				font-size: 4.5rem;
+			}
+			header h2 {
+				/*color: #f8f980;*/
+				color: white;
+				font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
+				font-variant: small-caps;
+				font-size: 2rem;
+				font-weight: 300;
+			}
+			h1 {
+				color: #f8f980;
+				font-family: 'Alfa Slab One';
+				font-size: 6rem;
+				text-align: center;
+			}
+			#scrolly-overlay .scrolly {
+				/*max-width: 60rem;*/
+				/*margin: 3rem auto;*/
+				background-color: #f4f4f4;
+				/*padding: 1rem;*/
+			}
+			#scrolly-overlay .scrolly article {
+				padding: 0;
+				max-width: 67vw;
+				margin: 0 auto;
+				position: relative;
+			}
+			#scrolly-overlay .scrolly article .step {
+				min-height: 100vh;
+				margin-bottom: 1rem;
+			}
+			#scrolly-overlay .scrolly article .step:last-of-type {
+				margin-bottom: 0;
+			}
+			#scrolly-overlay .scrolly article .step-box {
+				background-color: #f4f4f2;
+				padding: 3rem;
+			}
+
+			#scrolly-overlay .scrolly figure.sticky {
+				position: -webkit-sticky;
+				position: sticky;
+				width: 100%;
+				height: 50vh;
+				background: #969696;
+				margin: 0;
+				top: 25vh;
+				left: 0;
+			}
+        </style>
+		<link rel="preconnect" href="https://fonts.gstatic.com">
+		<link href="https://fonts.googleapis.com/css2?family=Alfa+Slab+One&display=swap" rel="stylesheet">
+		<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,wght@0,300;1,300&display=swap" rel="stylesheet"> 
+		<script src="https://d3js.org/d3.v4.min.js"></script>
+		<script src="https://unpkg.com/enter-view@1.0.0/enter-view.min.js"></script>
+		<script src="https://unpkg.com/stickyfilljs@2.0.5/dist/stickyfill.js"></script>
+		<link href="https://api.mapbox.com/mapbox-gl-js/v2.1.1/mapbox-gl.css" rel="stylesheet">
+		<script src="https://api.mapbox.com/mapbox-gl-js/v2.1.1/mapbox-gl.js"></script>
+	</head>
+	<body>
+
+		<div id="header-hero">
+			<header>
+				<h1>Seroprevalence in Nigeria</h1>
+				<h2>Data Visualization by Dave McLaughlin</h2>
+			</header>
+		</div>
+		
+		<section id="scrolly-overlay">
+		
+			<div class="scrolly">
+				<!--  sticky graphic   -->
+				<figure class="sticky" style="height: 100vh; top: 0;">
+					<video playsinline autoplay muted loop style="object-fit: cover; height: 100vh; width: 100%;">
+						<source src="lagos-drone.mp4" type="video/mp4">
+					</video>
+				</figure>
+
+				<!--  step text   -->
+				<article>
+					<div class='step' data-index='0'>
+						<h1>Background</h1>
+						<div class="step-box">
+							<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur elit diam, cursus nec arcu eget, dictum scelerisque tellus. Praesent feugiat, ante ut mattis sagittis, metus elit ultricies augue, quis faucibus nisi tortor vitae neque. Aenean purus tortor, mattis eget nibh sit amet, auctor ullamcorper leo. Aliquam nec justo velit. Suspendisse tristique ipsum sed tortor placerat, sit amet elementum nulla dictum. Duis lorem velit, pellentesque nec metus at, finibus aliquam lorem. Nunc et nisl magna. Quisque ante leo, dictum sed ullamcorper id, egestas ut velit. Fusce eget tortor nisl.</p>
+							<p>Nullam scelerisque rutrum erat, at scelerisque magna maximus vel. Nullam placerat pulvinar volutpat. Aenean non nunc erat. Nam non commodo massa. Praesent non tortor nulla. Pellentesque tempus, dui eu cursus tempus, mi nisl posuere est, id vulputate augue ipsum nec mi. Vestibulum at tincidunt diam. Donec auctor suscipit lectus, vitae ultrices nisl efficitur ac. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Aliquam erat volutpat. Ut eget vulputate ligula. Sed sodales fermentum lorem non bibendum. Praesent congue, dolor vel elementum cursus, lorem lorem dapibus neque, nec rutrum ligula mi ac velit. </p>
+						</div>
+					</div>
+					<div class='step' data-index='1'>
+						<div class="step-box">
+							<p>test</p>
+						</div>>
+					</div>
+					<div class='step' data-index='2'>
+						<div class="step-box">
+							<p>test</p>
+						</div>>
+					</div>
+				</article>
+					
+			</div>
+
+			<div class="scrolly">
+				
+				<figure class="sticky" style="height: 100vh; top: 0;">
+					<script src="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.5.1/mapbox-gl-geocoder.min.js"></script>
+					<link rel="stylesheet" href="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.5.1/mapbox-gl-geocoder.css" type="text/css">
+					<!-- Promise polyfill script required to use Mapbox GL Geocoder in IE 11 -->
+					<script src="https://cdn.jsdelivr.net/npm/es6-promise@4/dist/es6-promise.min.js"></script>
+					<script src="https://cdn.jsdelivr.net/npm/es6-promise@4/dist/es6-promise.auto.min.js"></script>
+					<div id="map" style="position: absolute; width: 100%; top: 0; bottom: 0;"></div>
+					
+					<script>
+						mapboxgl.accessToken = 'pk.eyJ1IjoiZGF2ZW1jbGF1Z2hsaW4iLCJhIjoiY2p4bzBlaGJ5MDF3NzNscXA5MnJyeW4xcyJ9.RlsTLBiHzI-gxBHMKZvWCg';
+						var map = new mapboxgl.Map({
+							container: 'map',
+							style: 'mapbox://styles/mapbox/light-v10',
+							center: [8, 9],
+							zoom: 6
+						});
+					
+						var coordinatesGeocoder = function (query) {
+							// match anything which looks like a decimal degrees coordinate pair
+							var matches = query.match(
+								/^[ ]*(?:Lat: )?(-?\d+\.?\d*)[, ]+(?:Lng: )?(-?\d+\.?\d*)[ ]*$/i
+							);
+							if (!matches) {
+								return null;
+							}
+							
+							function coordinateFeature(lng, lat) {
+								return {
+									center: [lng, lat],
+									geometry: {
+										type: 'Point',
+										coordinates: [lng, lat]
+									},
+									place_name: 'Lat: ' + lat + ' Lng: ' + lng,
+									place_type: ['coordinate'],
+									properties: {},
+									type: 'Feature'
+								};
+							}
+							
+							var coord1 = Number(matches[1]);
+							var coord2 = Number(matches[2]);
+							var geocodes = [];
+							
+							if (coord1 < -90 || coord1 > 90) {
+								// must be lng, lat
+								geocodes.push(coordinateFeature(coord1, coord2));
+							}
+							
+							if (coord2 < -90 || coord2 > 90) {
+								// must be lat, lng
+								geocodes.push(coordinateFeature(coord2, coord1));
+							}
+							
+							if (geocodes.length === 0) {
+								// else could be either lng, lat or lat, lng
+								geocodes.push(coordinateFeature(coord1, coord2));
+								geocodes.push(coordinateFeature(coord2, coord1));
+							}
+							
+							return geocodes;
+						};
+					
+						map.addControl(
+							new MapboxGeocoder({
+								accessToken: mapboxgl.accessToken,
+								localGeocoder: coordinatesGeocoder,
+								countries: 'ng',
+								mapboxgl: mapboxgl
+							})
+						);
+						map.addControl(new mapboxgl.NavigationControl());
+					
+						map.on('load', function () {
+							// Find the index of the first symbol layer in the map style
+							// so that the labels can be added over the point clusters
+							var layers = map.getStyle().layers;
+							var firstSymbolId;
+							for (var i = 0; i < layers.length; i++) {
+								if (layers[i].type === 'symbol') {
+									firstSymbolId = layers[i].id;
+									break;
+								}
+							}
+					
+							map.addSource('clustersData', {
+								type: 'geojson',
+								data: '../clustersData.geojson',
+								cluster: true,
+								clusterMaxZoom: 22, // Max zoom to cluster points on
+								clusterRadius: 1, // Radius of each cluster when clustering points (defaults to 50)
+								clusterProperties: {
+									sumSero: ["+", ["number", ["get", "sero"], 0]]
+								}
+							});
+					
+							map.addLayer(
+								{
+									id: 'clusters',
+									type: 'circle',
+									source: 'clustersData',
+									filter: ['has', 'point_count'],
+									paint: {
+										'circle-radius': ['interpolate', ['linear'], ['get', 'point_count'],
+											2, 6,
+											100, 50
+										],
+										'circle-color': ['interpolate', ['linear'], ['/', ['get', 'sumSero'], ['get', 'point_count']],
+											0, '#2c7fb8',
+											1, '#f8f980'
+										],
+										'circle-opacity': ['interpolate', ['linear'], ['/', ['get', 'sumSero'], ['get', 'point_count']],
+											0, 0.1,
+											1, 0.8
+										]
+									}
+								},
+								firstSymbolId
+							);
+					
+							map.addLayer({
+								id: 'unclustered-point',
+								type: 'circle',
+								source: 'clustersData',
+								filter: ['!', ['has', 'point_count']],
+								paint: {
+									'circle-radius': 3,
+									'circle-color': ['interpolate', ['linear'], ['/', ['get', 'sero', ['properties']], 1],
+										0, '#2c7fb8',
+										1, '#f8f980'
+									],
+									'circle-opacity': ['interpolate', ['linear'], ['/', ['get', 'sero', ['properties']], 1],
+										0, 0.1,
+										1, 0.8
+									]
+								}
+							});
+					
+							map.on('click', 'clusters', function (e) {
+								var features = map.queryRenderedFeatures(e.point, {
+									layers: ['clusters']
+								});
+								var clusterId = features[0].properties.cluster_id;
+					
+								new mapboxgl.Popup()
+									.setLngLat(features[0].geometry.coordinates)
+									.setHTML(
+										'<strong>' + features[0].properties.point_count + ' Individuals</strong><br>' +
+										'Seroprevalence: ' + (features[0].properties.sumSero / features[0].properties.point_count).toLocaleString("en", {style: "percent"})
+									)
+									.addTo(map);
+							});
+					
+							map.on('click', 'unclustered-point', function (e) {
+								var coordinates = e.features[0].geometry.coordinates.slice();
+								var age = e.features[0].properties.age;
+								var sero;
+								if (e.features[0].properties.sero == 1) {
+									sero = 'Yes';
+								} else {
+									sero = 'No';
+								}
+					
+								new mapboxgl.Popup()
+									.setLngLat(coordinates)
+									.setHTML(
+										'<strong>Single Individual</strong><br>' +
+										'Age: ' + age + '<br>' +
+										'Seroprevalence: ' + sero
+									)
+									.addTo(map);
+							});
+					
+							map.on('mouseenter', 'clusters', function () {
+								map.getCanvas().style.cursor = 'pointer';
+							});
+							map.on('mouseenter', 'unclustered-point', function () {
+								map.getCanvas().style.cursor = 'pointer';
+							});
+							map.on('mouseleave', 'clusters', function () {
+								map.getCanvas().style.cursor = '';
+							});
+							map.on('mouseleave', 'unclustered-point', function () {
+								map.getCanvas().style.cursor = '';
+							});
+						});
+					</script>
+									</figure>
+
+
+				<!--  step text   -->
+				<article>
+				<div class='step' data-index='3'>
+					<h1>Introduction</h1>
+					<p>This is some introductory information about the project.</p>
+					<p>Hey, here&rsquo;s more!</p>
+				</div>
+				<div class='step' data-index='4'>
+					<p>Bar is 90%</p>
+				</div>
+				<div class='step' data-index='5'>
+					<p>Bar is 50%</p>
+				</div>
+				</article>
+				
+			</div>
+		
+		</section>
+		
+		<section style="height: 1000px;">
+			<p>Text at the end</p>
+			<p>Text at the end</p>
+			<p>Text at the end</p>
+			<p>Text at the end</p>
+			<p>Text at the end</p>
+			<p>Text at the end</p>
+			<p>Text at the end</p>
+			<p>Text at the end</p>
+			<p>Text at the end</p>
+			<p>Text at the end</p>
+			<p>Text at the end</p>
+			<p>Text at the end</p>
+			<p>Text at the end</p>
+			<p>Text at the end</p>
+			<p>Text at the end</p>
+		</section>
+
+		<script>
+			const container = d3.select('#scrolly-overlay');
+			const stepSel = container.selectAll('.step');
+
+			function init() {
+			Stickyfill.add(d3.select('.sticky').node());
+
+				enterView({
+					selector: stepSel.nodes(),
+					offset: 0.5,
+					enter: el => {
+						const index = +d3.select(el).attr('data-index');
+						console.log(index);
+						if (index == 5) {
+							map.setStyle('mapbox://styles/mapbox/dark-v10');
+						}
+					},
+					exit: el => {
+						let index = +d3.select(el).attr('data-index');
+						index = Math.max(0, index - 1);
+					}
+				});
+			}
+
+			init();
+		</script>
+	</body>
+</html>
