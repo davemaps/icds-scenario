@@ -40,11 +40,11 @@ body { margin: 0; padding: 0; }
         // Add a new source from our GeoJSON data and
         // set the 'cluster' option to true. GL-JS will
         // add the point_count property to your source data.
-        map.addSource('seroData', {
+        map.addSource('seroClusters', {
             type: 'geojson',
             // Point to GeoJSON data. This example visualizes all M1.0+ earthquakes
             // from 12/22/15 to 1/21/16 as logged by USGS' Earthquake hazards program.
-            data: 'seroDatamin.geojson',
+            data: 'seroClusters.geojson',
             cluster: true,
             clusterMaxZoom: 22, // Max zoom to cluster points on
             clusterRadius: 1, // Radius of each cluster when clustering points (defaults to 50)
@@ -57,7 +57,7 @@ body { margin: 0; padding: 0; }
                 {
                         id: 'clusters',
                         type: 'circle',
-                        source: 'seroData',
+                        source: 'seroClusters',
                         filter: ['has', 'point_count'],
                         paint: {
                                 'circle-radius': ['interpolate', ['linear'], ['get', 'point_count'],
@@ -80,7 +80,7 @@ body { margin: 0; padding: 0; }
         map.addLayer({
             id: 'unclustered-point',
             type: 'circle',
-            source: 'seroData',
+            source: 'seroClusters',
             filter: ['!', ['has', 'point_count']],
             paint: {
                 'circle-radius': 3,

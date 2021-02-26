@@ -1,7 +1,6 @@
 {
 "type": "FeatureCollection",
 "name": "voronoi-stats-30-34",
-"crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },
 "features": [
 { "type": "Feature", "properties": { "sero": 10, "count": 11 }, "geometry": { "type": "MultiPolygon", "coordinates": [ [ [ [ 8.596039, 10.333637 ], [ 8.415386, 10.469481 ], [ 8.435278, 10.517759 ], [ 8.656942, 10.606142 ], [ 8.674912, 10.602555 ], [ 8.684773, 10.543414 ], [ 8.596039, 10.333637 ] ] ] ] } },
 { "type": "Feature", "properties": { "sero": 9, "count": 9 }, "geometry": { "type": "MultiPolygon", "coordinates": [ [ [ [ 8.607486, 10.285031 ], [ 8.596039, 10.333637 ], [ 8.684773, 10.543414 ], [ 8.764958, 10.452948 ], [ 8.74485, 10.291197 ], [ 8.607486, 10.285031 ] ] ] ] } },
