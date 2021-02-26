@@ -37,9 +37,6 @@ body { margin: 0; padding: 0; }
                         }
                 }
 
-        // Add a new source from our GeoJSON data and
-        // set the 'cluster' option to true. GL-JS will
-        // add the point_count property to your source data.
         map.addSource('voronoiStatsTotal', {
             type: 'vector',
             url: 'mapbox://davemclaughlin.cklljqxhv0bxb21nqurwzll79-86him'
@@ -64,6 +61,22 @@ body { margin: 0; padding: 0; }
                 },
                 firstSymbolId
         );
+
+        map.addSource('voronoiStats25-29', {
+            type: 'vector',
+            url: 'mapbox://davemclaughlin.ckllk7uw2054z28qv7m18fq5n-42br4'
+        });
+
+        map.addSource('voronoiStats30-34', {
+            type: 'vector',
+            url: 'mapbox://davemclaughlin.ckllk9sf9055r28qvh0xds9wg-9ta5n'
+        });
+
+        map.addSource('voronoiStats35-39', {
+            type: 'vector',
+            url: 'mapbox://davemclaughlin.ckllkax310qzj20p5d8tyqbfz-58w5a'
+        });
+
 
         map.on('click', 'voronoiStatsTotal', function (e) {
             new mapboxgl.Popup()
