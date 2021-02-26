@@ -29,6 +29,8 @@ Geocoder search to zoom to location
 ### Predict outcomes for an individual
 
 Our first attempt to generalize the clusters across a wider area
+Try searching for a place
+Try searching for coordinates
 
 #### Voronoi
 
