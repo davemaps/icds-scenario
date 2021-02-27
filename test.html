@@ -221,7 +221,7 @@
 					<script src="https://cdn.jsdelivr.net/npm/es6-promise@4/dist/es6-promise.min.js"></script>
 					<script src="https://cdn.jsdelivr.net/npm/es6-promise@4/dist/es6-promise.auto.min.js"></script>
 					<nav id="mapMenu">
-						<a class="active" id="navClustersAll">All Clusters</a>
+						<a class="active" id="navClustersAll">All Ages</a>
 						<a class="" id="navClusters25">25&ndash;29 Years</a>
 						<a class="" id="navClusters30">30&ndash;34 Years</a>
 						<a class="" id="navClusters35">35&ndash;39 Years</a>
@@ -304,6 +304,14 @@
 									break;
 								}
 							}
+
+							map.addSource('mapbox-dem', {
+								'type': 'raster-dem',
+								'url': 'mapbox://mapbox.mapbox-terrain-dem-v1',
+								'tileSize': 512,
+								'maxzoom': 14
+							});
+							map.setTerrain({ 'source': 'mapbox-dem', 'exaggeration': 5 });
 
 							map.addSource('clusters', {
 								type: 'geojson',
@@ -660,12 +668,15 @@
 					<div class="step step-box-map" data-index="6">
 						<p>Rural northwest</p>
 					</div>
-					<div class="step step-box-map" data-index="7" style="margin-bottom: 20vh;">
+					<div class="step step-box-map" data-index="7">
+						<p>Hills in the east</p>
+					</div>
+					<div class="step step-box-map" data-index="8" style="margin-bottom: 20vh;">
 						<p>Mid-size cities like Enugu</p>
 					</div>
 				</article>
 				<article style="height: 100vh; width: 0;">
-					<div class="step" data-index="8"></div>
+					<div class="step" data-index="9"></div>
 				</article>
 				
 			</div>
@@ -833,7 +844,6 @@
 								essential: true
 							});
 						}
-
 						if (index == 5) {
 							map.flyTo({
 								center: { lon: 3.41080, lat: 6.42857 },
@@ -844,7 +854,6 @@
 								essential: true
 							});
 						}
-
 						if (index == 6) {
 							map.flyTo({
 								center: { lon: 4.86763, lat: 12.56716 },
@@ -855,18 +864,27 @@
 								essential: true
 							});
 						}
-
 						if (index == 7) {
 							map.flyTo({
-								center: { lon: 7.36505, lat: 6.44924 },
-								zoom: 9.75,
-								pitch: 0.00,
-								bearing: 0.00,
-								speed: 0.3,
+								center: { lon: 11.78638, lat: 9.14011 },
+								zoom: 10.5,
+								pitch: 65.00,
+								bearing: 176,
+								speed: 0.2,
 								essential: true
 							});
 						}
 						if (index == 8) {
+							map.flyTo({
+								center: { lon: 7.36505, lat: 6.44924 },
+								zoom: 9.75,
+								pitch: 0.00,
+								bearing: 180.00,
+								speed: 0.3,
+								essential: true
+							});
+						}
+						if (index == 9) {
 							map.flyTo({
 								center: { lon: 6.8, lat: 9 },
 								zoom: 6,
@@ -876,12 +894,6 @@
 								essential: true
 							});
 						}
-						/*
-						if (index == 7) {
-							map.setStyle('mapbox://styles/mapbox/dark-v10');
-						}
-						*/
-
 					},
 					exit: el => {
 						let index = +d3.select(el).attr('data-index');
@@ -894,7 +906,7 @@
 
 						if (index == 4) {
 							map.flyTo({
-								center: [ 6.8, 9 ],
+								center: { lon: 6.8, lat: 9 },
 								zoom: 6,
 								pitch: 0,
 								bearing: 0,
@@ -924,17 +936,27 @@
 						}
 						if (index == 7) {
 							map.flyTo({
-								center: { lon: 7.36505, lat: 6.44924 },
-								zoom: 9.75,
-								pitch: 0.00,
-								bearing: 0.00,
+								center: { lon: 11.78638, lat: 9.14011 },
+								zoom: 10.5,
+								pitch: 65.00,
+								bearing: 176,
 								speed: 0.5,
 								essential: true
 							});
 						}
 						if (index == 8) {
 							map.flyTo({
-								center: { lon: 8, lat: 9 },
+								center: { lon: 7.36505, lat: 6.44924 },
+								zoom: 9.75,
+								pitch: 0.00,
+								bearing: 180.00,
+								speed: 0.5,
+								essential: true
+							});
+						}
+						if (index == 9) {
+							map.flyTo({
+								center: { lon: 6.8, lat: 9 },
 								zoom: 6,
 								pitch: 0,
 								bearing: 0,
