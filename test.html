@@ -11,7 +11,7 @@
 			}
 			body {
 				/*background-color: #2c7fb8;*/
-				background-color: black;
+				/*background-color: black;*/
 				color: #2e2e2e;
 				margin: 0;
 			}
@@ -23,6 +23,7 @@
 				font-size: 1.4rem;
 			}
 			#header-hero {
+				background-color: black;
 				display: flex;
 				justify-content: center;
 				align-items: center;
@@ -62,14 +63,22 @@
 			}
 			#scrolly-overlay .scrolly article .step {
 				min-height: 100vh;
-				margin-bottom: 1rem;
+				/*margin-bottom: 1rem;*/
 			}
 			#scrolly-overlay .scrolly article .step:last-of-type {
-				margin-bottom: 0;
+				/*margin-bottom: 0;*/
 			}
 			#scrolly-overlay .scrolly article .step-box {
 				background-color: #f4f4f2;
 				padding: 3rem;
+			}
+			#scrolly-overlay .scrolly article .step-box-map {
+				background-color: black;
+				color: white;
+				padding: 3rem;
+				margin-left: 3rem;
+				margin-bottom: 50vh;
+				min-height: 10vh;
 			}
 			#scrolly-overlay .scrolly figure.sticky {
 				position: -webkit-sticky;
@@ -89,6 +98,41 @@
 			}
 			.tooltip {
 				font-size: 1.2rem;
+			}
+
+			#mapMenu {
+				background: #fff;
+				position: absolute;
+				z-index: 1;
+				top: 55px;
+				right: 50px;
+				border-radius: 4px;
+				width: 120px;
+				border: 1px solid rgba(0, 0, 0, 0.4);
+				font-family: 'Open Sans', sans-serif;
+			}
+			#mapMenu a {
+				font-size: 13px;
+				color: #333;
+				display: block;
+				margin: 0;
+				padding: 0;
+				padding: 10px;
+				text-decoration: none;
+				border-bottom: 1px solid rgba(0, 0, 0, 0.25);
+				text-align: center;
+			}
+			#mapMenu a:last-child {
+				border: none;
+			}
+			#mapMenu a:hover {
+				background-color: #f8f8f8;
+				color: #404040;
+				cursor: pointer;
+			}
+			#mapMenu a.active {
+				background-color: #333;
+				color: #ffffff;
 			}
         </style>
 		<link rel="preconnect" href="https://fonts.gstatic.com">
@@ -176,6 +220,12 @@
 					<!-- Promise polyfill script required to use Mapbox GL Geocoder in IE 11 -->
 					<script src="https://cdn.jsdelivr.net/npm/es6-promise@4/dist/es6-promise.min.js"></script>
 					<script src="https://cdn.jsdelivr.net/npm/es6-promise@4/dist/es6-promise.auto.min.js"></script>
+					<nav id="mapMenu">
+						<a class="active" id="navClustersAll">All Clusters</a>
+						<a class="" id="navClusters25">25&ndash;29 Years</a>
+						<a class="" id="navClusters30">30&ndash;34 Years</a>
+						<a class="" id="navClusters35">35&ndash;39 Years</a>
+					</nav>
 					<div id="map" style="position: absolute; width: 100%; top: 0; bottom: 0;"></div>
 					
 					<script>
@@ -254,8 +304,8 @@
 									break;
 								}
 							}
-					
-							map.addSource('clustersData', {
+
+							map.addSource('clusters', {
 								type: 'geojson',
 								data: 'clustersData.geojson',
 								cluster: true,
@@ -265,12 +315,42 @@
 									sumSero: ["+", ["number", ["get", "sero"], 0]]
 								}
 							});
-					
+							map.addSource('clusters25', {
+								type: 'geojson',
+								data: 'clustersData25.geojson',
+								cluster: true,
+								clusterMaxZoom: 22, // Max zoom to cluster points on
+								clusterRadius: 1, // Radius of each cluster when clustering points (defaults to 50)
+								clusterProperties: {
+									sumSero: ["+", ["number", ["get", "sero"], 0]]
+								}
+							});
+							map.addSource('clusters30', {
+								type: 'geojson',
+								data: 'clustersData30.geojson',
+								cluster: true,
+								clusterMaxZoom: 22, // Max zoom to cluster points on
+								clusterRadius: 1, // Radius of each cluster when clustering points (defaults to 50)
+								clusterProperties: {
+									sumSero: ["+", ["number", ["get", "sero"], 0]]
+								}
+							});
+							map.addSource('clusters35', {
+								type: 'geojson',
+								data: 'clustersData35.geojson',
+								cluster: true,
+								clusterMaxZoom: 22, // Max zoom to cluster points on
+								clusterRadius: 1, // Radius of each cluster when clustering points (defaults to 50)
+								clusterProperties: {
+									sumSero: ["+", ["number", ["get", "sero"], 0]]
+								}
+							});
+
 							map.addLayer(
 								{
 									id: 'clusters',
 									type: 'circle',
-									source: 'clustersData',
+									source: 'clusters',
 									filter: ['has', 'point_count'],
 									paint: {
 										'circle-radius': ['interpolate', ['linear'], ['get', 'point_count'],
@@ -289,12 +369,149 @@
 								},
 								firstSymbolId
 							);
-					
 							map.addLayer({
 								id: 'unclustered-point',
 								type: 'circle',
-								source: 'clustersData',
+								source: 'clusters',
 								filter: ['!', ['has', 'point_count']],
+								paint: {
+									'circle-radius': 3,
+									'circle-color': ['interpolate', ['linear'], ['/', ['get', 'sero', ['properties']], 1],
+										0, '#2c7fb8',
+										1, '#f8f980'
+									],
+									'circle-opacity': ['interpolate', ['linear'], ['/', ['get', 'sero', ['properties']], 1],
+										0, 0.1,
+										1, 0.8
+									]
+								}
+							});
+							map.addLayer(
+								{
+									id: 'clusters25',
+									type: 'circle',
+									source: 'clusters25',
+									filter: ['has', 'point_count'],
+									layout: {
+										'visibility': 'none'
+									},
+									paint: {
+										'circle-radius': ['interpolate', ['linear'], ['get', 'point_count'],
+											2, 6,
+											100, 50
+										],
+										'circle-color': ['interpolate', ['linear'], ['/', ['get', 'sumSero'], ['get', 'point_count']],
+											0, '#2c7fb8',
+											1, '#f8f980'
+										],
+										'circle-opacity': ['interpolate', ['linear'], ['/', ['get', 'sumSero'], ['get', 'point_count']],
+											0, 0.1,
+											1, 0.8
+										]
+									}
+								},
+								firstSymbolId
+							);
+							map.addLayer({
+								id: 'unclustered-point25',
+								type: 'circle',
+								source: 'clusters25',
+								filter: ['!', ['has', 'point_count']],
+								layout: {
+									'visibility': 'none'
+								},
+								paint: {
+									'circle-radius': 3,
+									'circle-color': ['interpolate', ['linear'], ['/', ['get', 'sero', ['properties']], 1],
+										0, '#2c7fb8',
+										1, '#f8f980'
+									],
+									'circle-opacity': ['interpolate', ['linear'], ['/', ['get', 'sero', ['properties']], 1],
+										0, 0.1,
+										1, 0.8
+									]
+								}
+							});
+							map.addLayer(
+								{
+									id: 'clusters30',
+									type: 'circle',
+									source: 'clusters30',
+									filter: ['has', 'point_count'],
+									layout: {
+										'visibility': 'none'
+									},
+									paint: {
+										'circle-radius': ['interpolate', ['linear'], ['get', 'point_count'],
+											2, 6,
+											100, 50
+										],
+										'circle-color': ['interpolate', ['linear'], ['/', ['get', 'sumSero'], ['get', 'point_count']],
+											0, '#2c7fb8',
+											1, '#f8f980'
+										],
+										'circle-opacity': ['interpolate', ['linear'], ['/', ['get', 'sumSero'], ['get', 'point_count']],
+											0, 0.1,
+											1, 0.8
+										]
+									}
+								},
+								firstSymbolId
+							);
+							map.addLayer({
+								id: 'unclustered-point30',
+								type: 'circle',
+								source: 'clusters30',
+								filter: ['!', ['has', 'point_count']],
+								layout: {
+									'visibility': 'none'
+								},
+								paint: {
+									'circle-radius': 3,
+									'circle-color': ['interpolate', ['linear'], ['/', ['get', 'sero', ['properties']], 1],
+										0, '#2c7fb8',
+										1, '#f8f980'
+									],
+									'circle-opacity': ['interpolate', ['linear'], ['/', ['get', 'sero', ['properties']], 1],
+										0, 0.1,
+										1, 0.8
+									]
+								}
+							});
+							map.addLayer(
+								{
+									id: 'clusters35',
+									type: 'circle',
+									source: 'clusters35',
+									filter: ['has', 'point_count'],
+									layout: {
+										'visibility': 'none'
+									},
+									paint: {
+										'circle-radius': ['interpolate', ['linear'], ['get', 'point_count'],
+											2, 6,
+											100, 50
+										],
+										'circle-color': ['interpolate', ['linear'], ['/', ['get', 'sumSero'], ['get', 'point_count']],
+											0, '#2c7fb8',
+											1, '#f8f980'
+										],
+										'circle-opacity': ['interpolate', ['linear'], ['/', ['get', 'sumSero'], ['get', 'point_count']],
+											0, 0.1,
+											1, 0.8
+										]
+									}
+								},
+								firstSymbolId
+							);
+							map.addLayer({
+								id: 'unclustered-point35',
+								type: 'circle',
+								source: 'clusters35',
+								filter: ['!', ['has', 'point_count']],
+								layout: {
+									'visibility': 'none'
+								},
 								paint: {
 									'circle-radius': 3,
 									'circle-color': ['interpolate', ['linear'], ['/', ['get', 'sero', ['properties']], 1],
@@ -358,23 +575,97 @@
 
 							map.scrollZoom.disable();
 						});
+
+						document.getElementById('navClustersAll').onclick = function() {
+							map.setLayoutProperty('clusters', 'visibility', 'visible');
+							map.setLayoutProperty('unclustered-point', 'visibility', 'visible');
+							map.setLayoutProperty('clusters25', 'visibility', 'none');
+							map.setLayoutProperty('unclustered-point25', 'visibility', 'none');
+							map.setLayoutProperty('clusters30', 'visibility', 'none');
+							map.setLayoutProperty('unclustered-point30', 'visibility', 'none');
+							map.setLayoutProperty('clusters35', 'visibility', 'none');
+							map.setLayoutProperty('unclustered-point35', 'visibility', 'none');
+							document.getElementById('navClustersAll').className = 'active';
+							document.getElementById('navClusters25').className = '';
+							document.getElementById('navClusters30').className = '';
+							document.getElementById('navClusters35').className = '';
+							document.getElementById('navClustersAll').preventDefault();
+							document.getElementById('navClustersAll').stopPropagation();
+						}
+						document.getElementById('navClusters25').onclick = function() {
+							map.setLayoutProperty('clusters', 'visibility', 'none');
+							map.setLayoutProperty('unclustered-point', 'visibility', 'none');
+							map.setLayoutProperty('clusters25', 'visibility', 'visible');
+							map.setLayoutProperty('unclustered-point25', 'visibility', 'visible');
+							map.setLayoutProperty('clusters30', 'visibility', 'none');
+							map.setLayoutProperty('unclustered-point30', 'visibility', 'none');
+							map.setLayoutProperty('clusters35', 'visibility', 'none');
+							map.setLayoutProperty('unclustered-point35', 'visibility', 'none');
+							document.getElementById('navClustersAll').className = '';
+							document.getElementById('navClusters25').className = 'active';
+							document.getElementById('navClusters30').className = '';
+							document.getElementById('navClusters35').className = '';
+							document.getElementById('navClusters25').preventDefault();
+							document.getElementById('navClusters25').stopPropagation();
+						}
+						document.getElementById('navClusters30').onclick = function() {
+							map.setLayoutProperty('clusters', 'visibility', 'none');
+							map.setLayoutProperty('unclustered-point', 'visibility', 'none');
+							map.setLayoutProperty('clusters25', 'visibility', 'none');
+							map.setLayoutProperty('unclustered-point25', 'visibility', 'none');
+							map.setLayoutProperty('clusters30', 'visibility', 'visible');
+							map.setLayoutProperty('unclustered-point30', 'visibility', 'visible');
+							map.setLayoutProperty('clusters35', 'visibility', 'none');
+							map.setLayoutProperty('unclustered-point35', 'visibility', 'none');
+							document.getElementById('navClustersAll').className = '';
+							document.getElementById('navClusters25').className = '';
+							document.getElementById('navClusters30').className = 'active';
+							document.getElementById('navClusters35').className = '';
+							document.getElementById('navClusters30').preventDefault();
+							document.getElementById('navClusters30').stopPropagation();
+						}
+						document.getElementById('navClusters35').onclick = function() {
+							map.setLayoutProperty('clusters', 'visibility', 'none');
+							map.setLayoutProperty('unclustered-point', 'visibility', 'none');
+							map.setLayoutProperty('clusters25', 'visibility', 'none');
+							map.setLayoutProperty('unclustered-point25', 'visibility', 'none');
+							map.setLayoutProperty('clusters30', 'visibility', 'none');
+							map.setLayoutProperty('unclustered-point30', 'visibility', 'none');
+							map.setLayoutProperty('clusters35', 'visibility', 'visible');
+							map.setLayoutProperty('unclustered-point35', 'visibility', 'visible');
+							document.getElementById('navClustersAll').className = '';
+							document.getElementById('navClusters25').className = '';
+							document.getElementById('navClusters30').className = '';
+							document.getElementById('navClusters35').className = 'active';
+							document.getElementById('navClusters35').preventDefault();
+							document.getElementById('navClusters35').stopPropagation();
+						}
 					</script>
-									</figure>
+				</figure>
 
 
 				<!--  step text   -->
-				<article style="width: 90vw;">
-					<div class='step' data-index='3'>
-						<h1>Cluster Locations</h1>
+				<article style="width: 67vw;">
+					<div class='step' data-index='3' style="min-height: 67vh;">
+						<h1 style="-webkit-text-stroke: 1px #f4f4f2;">Cluster Locations</h1>
 					</div>
 				</article>
 				<article style="max-width: 25vw; margin: 0 auto 0 0;">
-					<div class='step step-box' data-index='4'>
-						<p>To date, 31,425 individuals have been tested for antibodies at 3,343 cluster locations.</p>
+					<div class="step step-box-map" data-index="4" style="padding-top: 4rem;">
+						<p>Explainer/legend</p>
 					</div>
-					<div class='step step-box' data-index='5'>
-						<p>test</p>
+					<div class="step step-box-map" data-index="5">
+						<p>Lagos</p>
 					</div>
+					<div class="step step-box-map" data-index="6">
+						<p>Rural northwest</p>
+					</div>
+					<div class="step step-box-map" data-index="7" style="margin-bottom: 20vh;">
+						<p>Mid-size cities like Enugu</p>
+					</div>
+				</article>
+				<article style="height: 100vh; width: 0;">
+					<div class="step" data-index="8"></div>
 				</article>
 				
 			</div>
@@ -534,7 +825,10 @@
 
 						if (index == 4) {
 							map.flyTo({
-								center: [ 6.8, 9 ],
+								center: { lon: 6.8, lat: 9 },
+								zoom: 6,
+								pitch: 0,
+								bearing: 0,
 								speed: 0.1,
 								essential: true
 							});
@@ -542,7 +836,7 @@
 
 						if (index == 5) {
 							map.flyTo({
-								center: [ 3.41080, 6.42857 ],
+								center: { lon: 3.41080, lat: 6.42857 },
 								zoom: 10.96,
 								pitch: 60,
 								bearing: -74.4,
@@ -551,9 +845,42 @@
 							});
 						}
 
+						if (index == 6) {
+							map.flyTo({
+								center: { lon: 4.86763, lat: 12.56716 },
+								zoom: 8.11,
+								pitch: 0.00,
+								bearing: 0.00,
+								speed: 0.3,
+								essential: true
+							});
+						}
+
+						if (index == 7) {
+							map.flyTo({
+								center: { lon: 7.36505, lat: 6.44924 },
+								zoom: 9.75,
+								pitch: 0.00,
+								bearing: 0.00,
+								speed: 0.3,
+								essential: true
+							});
+						}
+						if (index == 8) {
+							map.flyTo({
+								center: { lon: 6.8, lat: 9 },
+								zoom: 6,
+								pitch: 0,
+								bearing: 0,
+								speed: 0.5,
+								essential: true
+							});
+						}
+						/*
 						if (index == 7) {
 							map.setStyle('mapbox://styles/mapbox/dark-v10');
 						}
+						*/
 
 					},
 					exit: el => {
@@ -568,13 +895,53 @@
 						if (index == 4) {
 							map.flyTo({
 								center: [ 6.8, 9 ],
+								zoom: 6,
 								pitch: 0,
 								bearing: 0,
-								speed: 0.1,
+								speed: 0.5,
 								essential: true
 							});
 						}
-
+						if (index == 5) {
+							map.flyTo({
+								center: { lon: 3.41080, lat: 6.42857 },
+								zoom: 10.96,
+								pitch: 60,
+								bearing: -74.4,
+								speed: 0.5,
+								essential: true
+							});
+						}
+						if (index == 6) {
+							map.flyTo({
+								center: { lon: 4.86763, lat: 12.56716 },
+								zoom: 8.11,
+								pitch: 0.00,
+								bearing: 0.00,
+								speed: 0.5,
+								essential: true
+							});
+						}
+						if (index == 7) {
+							map.flyTo({
+								center: { lon: 7.36505, lat: 6.44924 },
+								zoom: 9.75,
+								pitch: 0.00,
+								bearing: 0.00,
+								speed: 0.5,
+								essential: true
+							});
+						}
+						if (index == 8) {
+							map.flyTo({
+								center: { lon: 8, lat: 9 },
+								zoom: 6,
+								pitch: 0,
+								bearing: 0,
+								speed: 0.5,
+								essential: true
+							});
+						}
 					}
 				});
 			}
