@@ -538,7 +538,6 @@
 									layers: ['clusters']
 								});
 								var clusterId = features[0].properties.cluster_id;
-					
 								new mapboxgl.Popup()
 									.setLngLat(features[0].geometry.coordinates)
 									.setHTML(
@@ -547,7 +546,6 @@
 									)
 									.addTo(map);
 							});
-					
 							map.on('click', 'unclustered-point', function (e) {
 								var coordinates = e.features[0].geometry.coordinates.slice();
 								var age = e.features[0].properties.age;
@@ -557,7 +555,99 @@
 								} else {
 									sero = 'No';
 								}
-					
+								new mapboxgl.Popup()
+									.setLngLat(coordinates)
+									.setHTML(
+										'<strong>Single Individual</strong><br>' +
+										'Age: ' + age + '<br>' +
+										'Seroprevalence: ' + sero
+									)
+									.addTo(map);
+							});
+							map.on('click', 'clusters25', function (e) {
+								var features = map.queryRenderedFeatures(e.point, {
+									layers: ['clusters25']
+								});
+								var clusterId = features[0].properties.cluster_id;
+								new mapboxgl.Popup()
+									.setLngLat(features[0].geometry.coordinates)
+									.setHTML(
+										'<strong>' + features[0].properties.point_count + ' Individuals</strong><br>' +
+										'Seroprevalence: ' + (features[0].properties.sumSero / features[0].properties.point_count).toLocaleString("en", {style: "percent"})
+									)
+									.addTo(map);
+							});
+							map.on('click', 'unclustered-point25', function (e) {
+								var coordinates = e.features[0].geometry.coordinates.slice();
+								var age = e.features[0].properties.age;
+								var sero;
+								if (e.features[0].properties.sero == 1) {
+									sero = 'Yes';
+								} else {
+									sero = 'No';
+								}
+								new mapboxgl.Popup()
+									.setLngLat(coordinates)
+									.setHTML(
+										'<strong>Single Individual</strong><br>' +
+										'Age: ' + age + '<br>' +
+										'Seroprevalence: ' + sero
+									)
+									.addTo(map);
+							});
+							map.on('click', 'clusters30', function (e) {
+								var features = map.queryRenderedFeatures(e.point, {
+									layers: ['clusters30']
+								});
+								var clusterId = features[0].properties.cluster_id;
+								new mapboxgl.Popup()
+									.setLngLat(features[0].geometry.coordinates)
+									.setHTML(
+										'<strong>' + features[0].properties.point_count + ' Individuals</strong><br>' +
+										'Seroprevalence: ' + (features[0].properties.sumSero / features[0].properties.point_count).toLocaleString("en", {style: "percent"})
+									)
+									.addTo(map);
+							});
+							map.on('click', 'unclustered-point30', function (e) {
+								var coordinates = e.features[0].geometry.coordinates.slice();
+								var age = e.features[0].properties.age;
+								var sero;
+								if (e.features[0].properties.sero == 1) {
+									sero = 'Yes';
+								} else {
+									sero = 'No';
+								}
+								new mapboxgl.Popup()
+									.setLngLat(coordinates)
+									.setHTML(
+										'<strong>Single Individual</strong><br>' +
+										'Age: ' + age + '<br>' +
+										'Seroprevalence: ' + sero
+									)
+									.addTo(map);
+							});
+							map.on('click', 'clusters35', function (e) {
+								var features = map.queryRenderedFeatures(e.point, {
+									layers: ['clusters35']
+								});
+								var clusterId = features[0].properties.cluster_id;
+								new mapboxgl.Popup()
+									.setLngLat(features[0].geometry.coordinates)
+									.setHTML(
+										'<strong>' + features[0].properties.point_count + ' Individuals</strong><br>' +
+										'Seroprevalence: ' + (features[0].properties.sumSero / features[0].properties.point_count).toLocaleString("en", {style: "percent"})
+									)
+									.addTo(map);
+							});
+							map.on('click', 'unclustered-point35', function (e) {
+								var coordinates = e.features[0].geometry.coordinates.slice();
+								var age = e.features[0].properties.age;
+								var sero;
+								if (e.features[0].properties.sero == 1) {
+									sero = 'Yes';
+								} else {
+									sero = 'No';
+								}
 								new mapboxgl.Popup()
 									.setLngLat(coordinates)
 									.setHTML(
@@ -578,6 +668,42 @@
 								map.getCanvas().style.cursor = '';
 							});
 							map.on('mouseleave', 'unclustered-point', function () {
+								map.getCanvas().style.cursor = '';
+							});
+							map.on('mouseenter', 'clusters25', function () {
+								map.getCanvas().style.cursor = 'pointer';
+							});
+							map.on('mouseenter', 'unclustered-point25', function () {
+								map.getCanvas().style.cursor = 'pointer';
+							});
+							map.on('mouseleave', 'clusters25', function () {
+								map.getCanvas().style.cursor = '';
+							});
+							map.on('mouseleave', 'unclustered-point25', function () {
+								map.getCanvas().style.cursor = '';
+							});
+							map.on('mouseenter', 'clusters30', function () {
+								map.getCanvas().style.cursor = 'pointer';
+							});
+							map.on('mouseenter', 'unclustered-point30', function () {
+								map.getCanvas().style.cursor = 'pointer';
+							});
+							map.on('mouseleave', 'clusters30', function () {
+								map.getCanvas().style.cursor = '';
+							});
+							map.on('mouseleave', 'unclustered-point30', function () {
+								map.getCanvas().style.cursor = '';
+							});
+							map.on('mouseenter', 'clusters35', function () {
+								map.getCanvas().style.cursor = 'pointer';
+							});
+							map.on('mouseenter', 'unclustered-point35', function () {
+								map.getCanvas().style.cursor = 'pointer';
+							});
+							map.on('mouseleave', 'clusters35', function () {
+								map.getCanvas().style.cursor = '';
+							});
+							map.on('mouseleave', 'unclustered-point35', function () {
 								map.getCanvas().style.cursor = '';
 							});
 
@@ -681,6 +807,20 @@
 				
 			</div>
 		
+			<div class="scrolly">
+				<figure class="sticky" style="height: 33vh; top: 0; background-color: #f4f4f2;">
+				</figure>
+
+				<article style="max-width: 67vw;">
+					<div class='step' data-index='10'>
+						<h1>Predicting Antibody Status in Individuals</h1>
+						<div class="step-box" style="text-align: center;">
+							<p>To date, <strong>31,425 individuals</strong> have been tested for antibodies in <strong>3,343 locations</strong>.</p>
+						</div>
+					</div>
+				</article>
+			</div>
+
 		</section>
 		
 		<section style="height: 1000px;">
@@ -886,11 +1026,11 @@
 						}
 						if (index == 9) {
 							map.flyTo({
-								center: { lon: 6.8, lat: 9 },
+								center: { lon: 8, lat: 9 },
 								zoom: 6,
 								pitch: 0,
 								bearing: 0,
-								speed: 0.5,
+								speed: 0.3,
 								essential: true
 							});
 						}
@@ -956,7 +1096,7 @@
 						}
 						if (index == 9) {
 							map.flyTo({
-								center: { lon: 6.8, lat: 9 },
+								center: { lon: 8, lat: 9 },
 								zoom: 6,
 								pitch: 0,
 								bearing: 0,
