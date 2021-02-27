@@ -536,7 +536,7 @@
 							map.flyTo({
 								center: [ 6.8, 9 ],
 								speed: 0.1,
-								essential: true // this animation is considered essential with respect to prefers-reduced-motion
+								essential: true
 							});
 						}
 
@@ -546,7 +546,8 @@
 								zoom: 10.96,
 								pitch: 60,
 								bearing: -74.4,
-								speed: 0.2
+								speed: 0.3,
+								essential: true
 							});
 						}
 
@@ -563,6 +564,16 @@
 						}
 
 						index = Math.max(0, index - 1);
+
+						if (index == 4) {
+							map.flyTo({
+								center: [ 6.8, 9 ],
+								pitch: 0,
+								bearing: 0,
+								speed: 0.1,
+								essential: true
+							});
+						}
 
 					}
 				});
