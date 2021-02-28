@@ -80,6 +80,14 @@
 				margin-bottom: 50vh;
 				min-height: 10vh;
 			}
+			#scrolly-overlay .scrolly article .step-box-map-dark {
+				background-color: #f4f4f4;
+				color: #2e2e2e;
+				padding: 3rem;
+				margin-left: 3rem;
+				margin-bottom: 50vh;
+				min-height: 10vh;
+			}
 			#scrolly-overlay .scrolly figure.sticky {
 				position: -webkit-sticky;
 				position: sticky;
@@ -165,6 +173,40 @@
 				cursor: pointer;
 			}
 			#mapVoronoiMenu a.active {
+				background-color: #333;
+				color: #ffffff;
+			}
+			#mapPopDotMenu {
+				background: #fff;
+				position: absolute;
+				z-index: 1;
+				top: 55px;
+				right: 50px;
+				border-radius: 4px;
+				width: 120px;
+				border: 1px solid rgba(0, 0, 0, 0.4);
+				font-family: 'Open Sans', sans-serif;
+			}
+			#mapPopDotMenu a {
+				font-size: 13px;
+				color: #333;
+				display: block;
+				margin: 0;
+				padding: 0;
+				padding: 10px;
+				text-decoration: none;
+				border-bottom: 1px solid rgba(0, 0, 0, 0.25);
+				text-align: center;
+			}
+			#mapPopDotMenu a:last-child {
+				border: none;
+			}
+			#mapPopDotMenu a:hover {
+				background-color: #f8f8f8;
+				color: #404040;
+				cursor: pointer;
+			}
+			#mapPopDotMenu a.active {
 				background-color: #333;
 				color: #ffffff;
 			}
@@ -1208,7 +1250,7 @@
 								<img src="election-map.jpg" style="width: 100%;">
 							</div>
 							<div style="width: 40%;">
-								<p>Viewing data as filled polygons on a map can lead to the impression that the phenomenon is evenly distributed throughout the areas.</p>
+								<p>Viewing data as filled polygons on a map can lead to the impression that the phenomenon is distributed evenly throughout the areas.</p>
 								<p>Just like land doesn&rsquo;t vote,<br>
 									the land does not catch this disease<br>
 									&mdash; people do.</p>
@@ -1217,6 +1259,160 @@
 						<p style="margin-top: 4rem; text-align: center;">So let&rsquo;s map the people.</p>
 					</div>
 				</article>
+			</div>
+
+			<div class="scrolly">
+				<article style="height: 0; width: 0;">
+					<div class="step" data-index="14">
+					</div>
+				</article>
+				<figure class="sticky" style="height: 100vh; top: 0;">
+					<nav id="mapPopDotMenu">
+						<a class="active" id="navPopDotAll">All Ages</a>
+						<a class="" id="navPopDot25">25&ndash;29 Years</a>
+						<a class="" id="navPopDot30">30&ndash;34 Years</a>
+						<a class="" id="navPopDot35">35&ndash;39 Years</a>
+					</nav>
+					<div id="mapPopDot" style="position: absolute; width: 100%; top: 0; bottom: 0;"></div>
+					
+					<script>
+						mapboxgl.accessToken = 'pk.eyJ1IjoiZGF2ZW1jbGF1Z2hsaW4iLCJhIjoiY2p4bzBlaGJ5MDF3NzNscXA5MnJyeW4xcyJ9.RlsTLBiHzI-gxBHMKZvWCg';
+						var mapPopDot = new mapboxgl.Map({
+							container: 'mapPopDot',
+							style: 'mapbox://styles/mapbox/dark-v10',
+							center: { lon: 0, lat: -8 },
+							zoom: 3.2,
+							pitch: 57,
+							bearing: 19
+						});
+					
+						var coordinatesGeocoder = function (query) {
+							// match anything which looks like a decimal degrees coordinate pair
+							var matches = query.match(
+								/^[ ]*(?:Lat: )?(-?\d+\.?\d*)[, ]+(?:Lng: )?(-?\d+\.?\d*)[ ]*$/i
+							);
+							if (!matches) {
+								return null;
+							}
+							
+							function coordinateFeature(lng, lat) {
+								return {
+									center: [lng, lat],
+									geometry: {
+										type: 'Point',
+										coordinates: [lng, lat]
+									},
+									place_name: 'Lat: ' + lat + ' Lng: ' + lng,
+									place_type: ['coordinate'],
+									properties: {},
+									type: 'Feature'
+								};
+							}
+							
+							var coord1 = Number(matches[1]);
+							var coord2 = Number(matches[2]);
+							var geocodes = [];
+							
+							if (coord1 < -90 || coord1 > 90) {
+								// must be lng, lat
+								geocodes.push(coordinateFeature(coord1, coord2));
+							}
+							
+							if (coord2 < -90 || coord2 > 90) {
+								// must be lat, lng
+								geocodes.push(coordinateFeature(coord2, coord1));
+							}
+							
+							if (geocodes.length === 0) {
+								// else could be either lng, lat or lat, lng
+								geocodes.push(coordinateFeature(coord1, coord2));
+								geocodes.push(coordinateFeature(coord2, coord1));
+							}
+							
+							return geocodes;
+						};
+					
+						mapPopDot.addControl(
+							new MapboxGeocoder({
+								accessToken: mapboxgl.accessToken,
+								localGeocoder: coordinatesGeocoder,
+								countries: 'ng',
+								mapboxgl: mapboxgl
+							})
+						);
+						mapPopDot.addControl(new mapboxgl.NavigationControl());
+					
+						mapPopDot.on('load', function () {
+							var layers = mapPopDot.getStyle().layers;
+							var firstSymbolId;
+							for (var i = 0; i < layers.length; i++) {
+								if (layers[i].type === 'symbol') {
+									firstSymbolId = layers[i].id;
+									break;
+								}
+							}
+
+							mapPopDot.addSource('popDot', {
+								type: 'raster',
+								url: 'mapbox://davemclaughlin.839tfkdk'
+							});
+					
+							mapPopDot.addSource('popDot25-29', {
+								type: 'raster',
+								url: 'mapbox://davemclaughlin.5bmujd6n'
+							});
+					
+							mapPopDot.addSource('popDot30-34', {
+								type: 'raster',
+								url: 'mapbox://davemclaughlin.bggi2i25'
+							});
+					
+							mapPopDot.addSource('popDot35-39', {
+								type: 'raster',
+								url: 'mapbox://davemclaughlin.b4duh1ro'
+							});
+					
+							mapPopDot.addLayer( {
+									id: "popDotLayer",
+									type: "raster",
+									source: "popDot"
+								},
+								firstSymbolId
+							);
+							
+							mapPopDot.scrollZoom.disable();
+						});
+					</script>
+				</figure>
+
+
+				<!--  step text   -->
+				<article style="width: 67vw;">
+					<div class='step' data-index='15' style="min-height: 100vh;">
+						<h1 style="color: #f4f4f2;">Population Grid</h1>
+					</div>
+				</article>
+				<article style="max-width: 25vw; margin: 0 auto 0 0;">
+					<div class="step step-box-map-dark" data-index="16" style="padding-top: 4rem;">
+						<p>Explainer/legend</p>
+					</div>
+					<div class="step step-box-map-dark" data-index="17">
+						<p>Port Harcourt</p>
+					</div>
+					<div class="step step-box-map-dark" data-index="18">
+						<p>Rural northeast</p>
+					</div>
+					<div class="step step-box-map-dark" data-index="19">
+						<p>Hills in the east</p>
+					</div>
+					<div class="step step-box-map-dark" data-index="20" style="margin-bottom: 20vh;">
+						<p>Mid-size cities like Enugu</p>
+					</div>
+				</article>
+				<article style="height: 100vh; width: 0;">
+					<div class="step" data-index="21"></div>
+				</article>
+				
 			</div>
 
 		</section>
@@ -1432,6 +1628,47 @@
 								essential: true
 							});
 						}
+						if (index == 14) {
+							mapPopDot.flyTo({
+								center: { lon: 8, lat: 9 },
+								zoom: 6,
+								pitch: 0,
+								bearing: 0,
+								speed: 0.15,
+								essential: true
+							});
+						}
+						if (index == 16) {
+							mapPopDot.flyTo({
+								center: { lon: 6.8, lat: 9 },
+								zoom: 6,
+								pitch: 0,
+								bearing: 0,
+								speed: 0.1,
+								essential: true
+							});
+						}
+						if (index == 17) {
+							mapPopDot.flyTo({
+								center: { lon: 6.58761, lat: 5.03793 },
+								zoom: 8.60,
+								pitch: 0,
+								bearing: 0,
+								speed: 0.2,
+								essential: true
+							});
+						}
+						if (index == 18) {
+							mapPopDot.easeTo({
+								center: { lon: 12.50384, lat: 10.81411 },
+								zoom: 8.5,
+								pitch: 50,
+								bearing: 10,
+								duration: 50000,
+								essential: true
+							});
+						}
+
 					},
 					exit: el => {
 						let index = +d3.select(el).attr('data-index');
@@ -1498,6 +1735,46 @@
 								zoom: 6,
 								pitch: 0,
 								bearing: 0,
+								speed: 0.5,
+								essential: true
+							});
+						}
+						if (index == 14) {
+							mapPopDot.flyTo({
+								center: { lon: 8, lat: 9 },
+								zoom: 6,
+								pitch: 0,
+								bearing: 0,
+								speed: 0.5,
+								essential: true
+							});
+						}
+						if (index == 16) {
+							mapPopDot.flyTo({
+								center: { lon: 6.8, lat: 9 },
+								zoom: 6,
+								pitch: 0,
+								bearing: 0,
+								speed: 0.5,
+								essential: true
+							});
+						}
+						if (index == 17) {
+							mapPopDot.easeTo({
+								center: { lon: 6.58761, lat: 5.03793 },
+								zoom: 8.60,
+								pitch: 0,
+								bearing: 0,
+								duration: 60000,
+								essential: true
+							});
+						}
+						if (index == 18) {
+							mapPopDot.flyTo({
+								center: { lon: 12.50384, lat: 10.81411 },
+								zoom: 8.5,
+								pitch: 50,
+								bearing: 10,
 								speed: 0.5,
 								essential: true
 							});

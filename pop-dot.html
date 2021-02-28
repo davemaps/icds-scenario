@@ -8,7 +8,7 @@
 <script src="https://api.mapbox.com/mapbox-gl-js/v2.1.1/mapbox-gl.js"></script>
 <style>
 body { margin: 0; padding: 0; }
-#map { position: absolute; top: 0; bottom: 0; width: 100%; }
+#mapPopDot { position: absolute; top: 0; bottom: 0; width: 100%; }
 </style>
 </head>
 <body>
@@ -17,12 +17,12 @@ body { margin: 0; padding: 0; }
 <!-- Promise polyfill script required to use Mapbox GL Geocoder in IE 11 -->
 <script src="https://cdn.jsdelivr.net/npm/es6-promise@4/dist/es6-promise.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/es6-promise@4/dist/es6-promise.auto.min.js"></script>
-<div id="map"></div>
+<div id="mapPopDot"></div>
 
 <script>
     mapboxgl.accessToken = 'pk.eyJ1IjoiZGF2ZW1jbGF1Z2hsaW4iLCJhIjoiY2p4bzBlaGJ5MDF3NzNscXA5MnJyeW4xcyJ9.RlsTLBiHzI-gxBHMKZvWCg';
-    var map = new mapboxgl.Map({
-        container: 'map',
+    var mapPopDot = new mapboxgl.Map({
+        container: 'mapPopDot',
         style: 'mapbox://styles/mapbox/dark-v10',
         center: [8, 9],
         zoom: 6
@@ -74,7 +74,7 @@ body { margin: 0; padding: 0; }
         return geocodes;
     };
 
-    map.addControl(
+    mapPopDot.addControl(
         new MapboxGeocoder({
             accessToken: mapboxgl.accessToken,
             localGeocoder: coordinatesGeocoder,
@@ -82,10 +82,10 @@ body { margin: 0; padding: 0; }
             mapboxgl: mapboxgl
         })
     );
-    map.addControl(new mapboxgl.NavigationControl());
+    mapPopDot.addControl(new mapboxgl.NavigationControl());
 
-    map.on('load', function () {
-        var layers = map.getStyle().layers;
+    mapPopDot.on('load', function () {
+        var layers = mapPopDot.getStyle().layers;
         var firstSymbolId;
         for (var i = 0; i < layers.length; i++) {
             if (layers[i].type === 'symbol') {
@@ -94,27 +94,27 @@ body { margin: 0; padding: 0; }
             }
         }
 
-        map.addSource('popDot', {
+        mapPopDot.addSource('popDot', {
             type: 'raster',
             url: 'mapbox://davemclaughlin.839tfkdk'
         });
 
-        map.addSource('popDot25-29', {
+        mapPopDot.addSource('popDot25-29', {
             type: 'raster',
             url: 'mapbox://davemclaughlin.5bmujd6n'
         });
 
-        map.addSource('popDot30-34', {
+        mapPopDot.addSource('popDot30-34', {
             type: 'raster',
             url: 'mapbox://davemclaughlin.bggi2i25'
         });
 
-        map.addSource('popDot35-39', {
+        mapPopDot.addSource('popDot35-39', {
             type: 'raster',
             url: 'mapbox://davemclaughlin.b4duh1ro'
         });
 
-        map.addLayer( {
+        mapPopDot.addLayer( {
                 id: "popDotLayer",
                 type: "raster",
                 source: "popDot"
