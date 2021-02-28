@@ -1558,6 +1558,235 @@
 				</article>
 			</div>
 
+			<div class="scrolly">
+				<figure class="sticky" style="height: 100vh; top: 0;">
+					<nav id="navAdmin">
+						<a class="active" id="navAdmin">All Ages</a>
+						<a class="" id="navAdmin">25&ndash;29 Years</a>
+						<a class="" id="navAdmin">30&ndash;34 Years</a>
+						<a class="" id="navAdmin">35&ndash;39 Years</a>
+					</nav>
+					<div id="mapAdmin" style="position: absolute; width: 100%; top: 0; bottom: 0;"></div>
+					
+					<script>
+						mapboxgl.accessToken = 'pk.eyJ1IjoiZGF2ZW1jbGF1Z2hsaW4iLCJhIjoiY2p4bzBlaGJ5MDF3NzNscXA5MnJyeW4xcyJ9.RlsTLBiHzI-gxBHMKZvWCg';
+						var mapAdmin = new mapboxgl.Map({
+							container: 'mapAdmin',
+							style: 'mapbox://styles/mapbox/light-v10',
+							center: [8, 9],
+							zoom: 6
+						});
+					
+						var zoomThreshold = 6.5;
+					
+						var coordinatesGeocoder = function (query) {
+							// match anything which looks like a decimal degrees coordinate pair
+							var matches = query.match(
+								/^[ ]*(?:Lat: )?(-?\d+\.?\d*)[, ]+(?:Lng: )?(-?\d+\.?\d*)[ ]*$/i
+							);
+							if (!matches) {
+								return null;
+							}
+							
+							function coordinateFeature(lng, lat) {
+								return {
+									center: [lng, lat],
+									geometry: {
+										type: 'Point',
+										coordinates: [lng, lat]
+									},
+									place_name: 'Lat: ' + lat + ' Lng: ' + lng,
+									place_type: ['coordinate'],
+									properties: {},
+									type: 'Feature'
+								};
+							}
+							
+							var coord1 = Number(matches[1]);
+							var coord2 = Number(matches[2]);
+							var geocodes = [];
+							
+							if (coord1 < -90 || coord1 > 90) {
+								// must be lng, lat
+								geocodes.push(coordinateFeature(coord1, coord2));
+							}
+							
+							if (coord2 < -90 || coord2 > 90) {
+								// must be lat, lng
+								geocodes.push(coordinateFeature(coord2, coord1));
+							}
+							
+							if (geocodes.length === 0) {
+								// else could be either lng, lat or lat, lng
+								geocodes.push(coordinateFeature(coord1, coord2));
+								geocodes.push(coordinateFeature(coord2, coord1));
+							}
+							
+							return geocodes;
+						};
+					
+						mapAdmin.addControl(
+							new MapboxGeocoder({
+								accessToken: mapboxgl.accessToken,
+								localGeocoder: coordinatesGeocoder,
+								countries: 'ng',
+								mapboxgl: mapboxgl
+							})
+						);
+						mapAdmin.addControl(new mapboxgl.NavigationControl());
+					
+						mapAdmin.on('load', function () {
+							var layers = mapAdmin.getStyle().layers;
+							var firstSymbolId;
+							for (var i = 0; i < layers.length; i++) {
+								if (layers[i].type === 'symbol') {
+									firstSymbolId = layers[i].id;
+									break;
+								}
+							}
+					
+							mapAdmin.addSource('admin-l2', {
+								type: 'vector',
+								url: 'mapbox://davemclaughlin.ckllmj5nv01b226nsxwbqubk4-1abs7'
+							});
+
+							mapAdmin.addSource('admin-l3', {
+								type: 'vector',
+								url: 'mapbox://davemclaughlin.ckllmhupe09u820po3g63txgp-11v5s'
+							});
+
+							mapAdmin.addLayer(
+								{
+									id: 'admin-l2',
+									type: 'fill',
+									source: 'admin-l2',
+									'source-layer': 'admin-l2',
+									maxzoom: zoomThreshold,
+									paint: {
+										'fill-color': ['interpolate', ['linear'], ['/', ['get', 'seroTot'], ['get', 'countTot']],
+											0, '#2c7fb8',
+											1, '#f8f980'
+										],
+										'fill-opacity': ['step', ['get', 'countTot'],
+											0,
+											1,
+											0.8
+										],
+										'fill-outline-color': '#eee',
+									}
+								},
+								firstSymbolId
+							);
+
+							mapAdmin.addLayer(
+								{
+									id: 'admin-l3',
+									type: 'fill-extrusion',
+									source: 'admin-l3',
+									'source-layer': 'admin-l3',
+									minzoom: zoomThreshold,
+									paint: {
+										'fill-extrusion-color': ['interpolate', ['linear'], ['/', ['get', 'seroTot'], ['get', 'countTot']],
+											0, '#2c7fb8',
+											1, '#f8f980'
+										],
+										'fill-extrusion-height': 0,
+										'fill-extrusion-height-transition': {
+											duration: 10000,
+											delay: 0
+										},
+										'fill-extrusion-opacity': 0.8,
+										/*
+										'fill-opacity': ['step', ['get', 'countTot'],
+											0,
+											1,
+											0.8
+										],
+										'fill-outline-color': '#eee'
+										*/
+									}
+								},
+								firstSymbolId
+							);
+
+							mapAdmin.on('click', 'admin-l2', function (e) {
+								var msgHeading =
+									'<strong>' + e.features[0].properties.statename + '</strong> <em>' + e.features[0].properties.capcity + '</em><br><br>' +
+									'<table><tr><th style="text-align: left;">Total Population</th><td>' + e.features[0].properties.pop.toLocaleString("en") + '</td></tr>';
+								var msgSero;
+								if (e.features[0].properties.countTot == 0) {
+									var msgSero = '<tr><th style="text-align: left;">Without Antibodies</th><td>No data</td></tr></table>';
+								} else {
+									var msgSero =
+										'<tr><th style="text-align: left;">Without Antibodies</th><td>' + Math.round((e.features[0].properties.pop * (e.features[0].properties.seroTot / e.features[0].properties.countTot))).toLocaleString("en") + '</td></tr></table>' +
+										'<br><strong>Seroprevalence</strong>' + 
+										'<table><tr><th style="text-align: left;">Overall</th><td>' + (e.features[0].properties.seroTot / e.features[0].properties.countTot).toLocaleString("en", {style: "percent"}) + '</td></tr>' +
+										'<tr><th style="text-align: left;">25&ndash;29</th><td>' + (e.features[0].properties.sero25 / e.features[0].properties.count25).toLocaleString("en", {style: "percent"}) + '</td></tr>' +
+										'<tr><th style="text-align: left;">30&ndash;34</th><td>' + (e.features[0].properties.sero30 / e.features[0].properties.count30).toLocaleString("en", {style: "percent"}) + '</td></tr>' +
+										'<tr><th style="text-align: left;">35&ndash;39</th><td>' + (e.features[0].properties.sero35 / e.features[0].properties.count35).toLocaleString("en", {style: "percent"}) + '</td></tr></table>';
+								}
+					
+								new mapboxgl.Popup()
+									.setLngLat(e.lngLat)
+									.setHTML(
+										msgHeading.concat(msgSero)
+									)
+									.addTo(mapAdmin);
+							});
+					
+							mapAdmin.on('click', 'admin-l3', function (e) {
+								var msgHeading = '<strong>' + e.features[0].properties.lganame + '</strong> <em>' + e.features[0].properties.statename + '</em><br>';
+								var msgSero;
+								if (e.features[0].properties.countTot == 0) {
+									var msgSero = 'No data';
+								} else {
+									var msgSero = 'Seroprevalence: ' + (e.features[0].properties.seroTot / e.features[0].properties.countTot).toLocaleString("en", {style: "percent"})
+								}
+								new mapboxgl.Popup()
+									.setLngLat(e.lngLat)
+									.setHTML(
+										msgHeading.concat(msgSero)
+									)
+									.addTo(mapAdmin);
+							});
+					
+							mapAdmin.on('mouseenter', 'admin-l2', function () {
+								mapAdmin.getCanvas().style.cursor = 'pointer';
+							});
+							mapAdmin.on('mouseleave', 'admin-l2', function () {
+								mapAdmin.getCanvas().style.cursor = '';
+							});
+							mapAdmin.on('mouseenter', 'admin-l3', function () {
+								mapAdmin.getCanvas().style.cursor = 'pointer';
+							});
+							mapAdmin.on('mouseleave', 'admin-l3', function () {
+								mapAdmin.getCanvas().style.cursor = '';
+							});
+
+							mapAdmin.scrollZoom.disable();
+
+						});
+					</script>
+				</figure>
+
+
+				<article style="max-width: 25vw; margin: 0 auto 0 0;">
+					<div class="step step-box-map-dark" data-index="23" style="padding-top: 4rem;">
+						<p>States with lowest overall seroprevalence</p>
+					</div>
+					<div class="step step-box-map-dark" data-index="24">
+						<p>Local governments</p>
+					</div>
+					<div class="step step-box-map-dark" data-index="25">
+						<p>Localities with lowest overall seroprevalence</p>
+					</div>
+				</article>
+				<article style="height: 100vh; width: 0;">
+					<div class="step" data-index="26"></div>
+				</article>
+				
+			</div>
+
 		</section>
 		
 		<section style="height: 1000px;">
@@ -1821,7 +2050,67 @@
 								essential: true
 							});
 						}
-
+						if (index == 23) {
+							mapAdmin.flyTo({
+								center: { lon: 6.8, lat: 9 },
+								zoom: 6,
+								pitch: 0,
+								bearing: 0,
+								speed: 0.1,
+								essential: true
+							});
+							mapAdmin.setPaintProperty(
+								'admin-l2', 
+								'fill-outline-color',
+								[
+									'step',
+									['/', ['get', 'seroTot'], ['get', 'countTot']],
+									'#f00',
+									0.6,
+									'rgba(255,255,255,0)'
+								]
+							);
+						}
+						if (index == 24) {
+							mapAdmin.flyTo({
+								center: { lon: 5.5, lat: 7.5 },
+								zoom: 7,
+								pitch: 0,
+								bearing: 0,
+								speed: 0.1,
+								essential: true
+							});
+						}
+						/*
+						if (index == 25) {
+							mapAdmin.setPaintProperty(
+								'admin-l3', 
+								'fill-outline-color',
+								[
+									'step',
+									['/', ['get', 'seroTot'], ['get', 'countTot']],
+									'#f00',
+									0.35,
+									'rgba(255,255,255,0)'
+								]
+							);
+						}
+						*/
+						if (index == 26) {
+							mapAdmin.setPaintProperty(
+								'admin-l3',
+								'fill-extrusion-height',
+								['/', ['*', ['get', 'pop'], ['/', ['get', 'seroTot'], ['get', 'countTot']]], 5]
+							);
+							mapAdmin.flyTo({
+								center: { lon: 6.53847, lat: 7.81216 },
+								zoom: 6.74,
+								pitch: 60.00,
+								bearing: 20.00,
+								speed: 0.1,
+								essential: true
+							});
+						}
 					},
 					exit: el => {
 						let index = +d3.select(el).attr('data-index');

@@ -141,7 +141,7 @@ body { margin: 0; padding: 0; }
                         0, '#2c7fb8',
                         1, '#f8f980'
                     ],
-                    'fill-extrusion-height': ['/', ['get', 'pop'], 10],
+                    'fill-extrusion-height': ['/', ['*', ['get', 'pop'], ['/', ['get', 'seroTot'], ['get', 'countTot']]], 5],
                     'fill-extrusion-opacity': 1
                     /*
                     'fill-extrusion-opacity': ['step', ['get', 'countTot'],
