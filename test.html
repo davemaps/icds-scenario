@@ -901,7 +901,7 @@
 							<div style="width: 40%; padding-right: 6rem; padding-top: 4rem;">
 								<p>Using a <strong>Voronoi diagram</strong>, we create polygons of area closest to each cluster point.</p>
 								<p>Now it is possible to quickly reference any location against data from the nearest cluster.</p>
-								<p>Search the map by location, then click for local stats.</p>
+								<p>Search the next map by location, then click for local stats.</p>
 							</div>
 							<div style="width: 60%;">
 								<p><img src="voronoi-illustration.gif" style="width: 100%;"></p>
@@ -1243,7 +1243,7 @@
 				</figure>
 
 				<article style="max-width: 67vw;">
-					<div class='step' data-index='13' style="min-height: 67vh;">
+					<div class='step' data-index='13' style="min-height: 100vh;">
 						<p style="text-align: center;"><strong>Caution!</strong></p>
 						<div class="step-box" style="display: flex; flex-direction: row;">
 							<div style="width: 60%; padding-right: 6rem;">
@@ -1252,11 +1252,11 @@
 							<div style="width: 40%;">
 								<p>Viewing data as filled polygons on a map can lead to the impression that the phenomenon is distributed evenly throughout the areas.</p>
 								<p>Just like land doesn&rsquo;t vote,<br>
-									the land does not catch this disease<br>
+									the land doesn&rsquo;t catch this disease<br>
 									&mdash; people do.</p>
 							</div>
 						</div>
-						<p style="margin-top: 4rem; text-align: center;">So let&rsquo;s map the people.</p>
+						<p style="margin-top: 12rem; text-align: center;">So let&rsquo;s map the people.</p>
 					</div>
 				</article>
 			</div>
@@ -1356,31 +1356,105 @@
 								type: 'raster',
 								url: 'mapbox://davemclaughlin.839tfkdk'
 							});
-					
-							mapPopDot.addSource('popDot25-29', {
+							mapPopDot.addSource('popDot25', {
 								type: 'raster',
 								url: 'mapbox://davemclaughlin.5bmujd6n'
 							});
-					
-							mapPopDot.addSource('popDot30-34', {
+							mapPopDot.addSource('popDot30', {
 								type: 'raster',
 								url: 'mapbox://davemclaughlin.bggi2i25'
 							});
-					
-							mapPopDot.addSource('popDot35-39', {
+							mapPopDot.addSource('popDot35', {
 								type: 'raster',
 								url: 'mapbox://davemclaughlin.b4duh1ro'
 							});
 					
 							mapPopDot.addLayer( {
-									id: "popDotLayer",
+									id: "popDot",
 									type: "raster",
 									source: "popDot"
 								},
 								firstSymbolId
 							);
+							mapPopDot.addLayer( {
+									id: "popDot25",
+									type: "raster",
+									source: "popDot25",
+									layout: {
+										'visibility': 'none'
+									}
+								}
+							);
+							mapPopDot.addLayer( {
+									id: "popDot30",
+									type: "raster",
+									source: "popDot30",
+									layout: {
+										'visibility': 'none'
+									}
+								}
+							);
+							mapPopDot.addLayer( {
+									id: "popDot35",
+									type: "raster",
+									source: "popDot35",
+									layout: {
+										'visibility': 'none'
+									}
+								}
+							);
 							
 							mapPopDot.scrollZoom.disable();
+
+							document.getElementById('navPopDotAll').onclick = function() {
+								mapPopDot.setLayoutProperty('popDot', 'visibility', 'visible');
+								mapPopDot.setLayoutProperty('popDot25', 'visibility', 'none');
+								mapPopDot.setLayoutProperty('popDot30', 'visibility', 'none');
+								mapPopDot.setLayoutProperty('popDot35', 'visibility', 'none');
+								document.getElementById('navPopDotAll').className = 'active';
+								document.getElementById('navPopDot25').className = '';
+								document.getElementById('navPopDot30').className = '';
+								document.getElementById('navPopDot35').className = '';
+								document.getElementById('navPopDotAll').preventDefault();
+								document.getElementById('navPopDotAll').stopPropagation();
+							}
+							document.getElementById('navPopDot25').onclick = function() {
+								mapPopDot.setLayoutProperty('popDot', 'visibility', 'none');
+								mapPopDot.setLayoutProperty('popDot25', 'visibility', 'visible');
+								mapPopDot.setLayoutProperty('popDot30', 'visibility', 'none');
+								mapPopDot.setLayoutProperty('popDot35', 'visibility', 'none');
+								document.getElementById('navPopDotAll').className = '';
+								document.getElementById('navPopDot25').className = 'active';
+								document.getElementById('navPopDot30').className = '';
+								document.getElementById('navPopDot35').className = '';
+								document.getElementById('navPopDot25').preventDefault();
+								document.getElementById('navPopDot25').stopPropagation();
+							}
+							document.getElementById('navPopDot30').onclick = function() {
+								mapPopDot.setLayoutProperty('popDot', 'visibility', 'none');
+								mapPopDot.setLayoutProperty('popDot25', 'visibility', 'none');
+								mapPopDot.setLayoutProperty('popDot30', 'visibility', 'visible');
+								mapPopDot.setLayoutProperty('popDot35', 'visibility', 'none');
+								document.getElementById('navPopDotAll').className = '';
+								document.getElementById('navPopDot25').className = '';
+								document.getElementById('navPopDot30').className = 'active';
+								document.getElementById('navPopDot35').className = '';
+								document.getElementById('navPopDot30').preventDefault();
+								document.getElementById('navPopDot30').stopPropagation();
+							}
+							document.getElementById('navPopDot35').onclick = function() {
+								mapPopDot.setLayoutProperty('popDot', 'visibility', 'none');
+								mapPopDot.setLayoutProperty('popDot25', 'visibility', 'none');
+								mapPopDot.setLayoutProperty('popDot30', 'visibility', 'none');
+								mapPopDot.setLayoutProperty('popDot35', 'visibility', 'visible');
+								document.getElementById('navPopDotAll').className = '';
+								document.getElementById('navPopDot25').className = '';
+								document.getElementById('navPopDot30').className = '';
+								document.getElementById('navPopDot35').className = 'active';
+								document.getElementById('navPopDot35').preventDefault();
+								document.getElementById('navPopDot35').stopPropagation();
+							}
+
 						});
 					</script>
 				</figure>
@@ -1402,15 +1476,9 @@
 					<div class="step step-box-map-dark" data-index="18">
 						<p>Rural northeast</p>
 					</div>
-					<div class="step step-box-map-dark" data-index="19">
-						<p>Hills in the east</p>
-					</div>
-					<div class="step step-box-map-dark" data-index="20" style="margin-bottom: 20vh;">
-						<p>Mid-size cities like Enugu</p>
-					</div>
 				</article>
 				<article style="height: 100vh; width: 0;">
-					<div class="step" data-index="21"></div>
+					<div class="step" data-index="19"></div>
 				</article>
 				
 			</div>
@@ -1663,8 +1731,18 @@
 								center: { lon: 12.50384, lat: 10.81411 },
 								zoom: 8.5,
 								pitch: 50,
-								bearing: 10,
+								bearing: 8,
 								duration: 50000,
+								essential: true
+							});
+						}
+						if (index == 19) {
+							mapPopDot.flyTo({
+								center: { lon: 8, lat: 9 },
+								zoom: 6,
+								pitch: 0,
+								bearing: 0,
+								speed: 0.5,
 								essential: true
 							});
 						}
@@ -1765,7 +1843,7 @@
 								zoom: 8.60,
 								pitch: 0,
 								bearing: 0,
-								duration: 60000,
+								duration: 2000,
 								essential: true
 							});
 						}
@@ -1774,7 +1852,17 @@
 								center: { lon: 12.50384, lat: 10.81411 },
 								zoom: 8.5,
 								pitch: 50,
-								bearing: 10,
+								bearing: 8,
+								speed: 0.5,
+								essential: true
+							});
+						}
+						if (index == 19) {
+							mapPopDot.flyTo({
+								center: { lon: 8, lat: 9 },
+								zoom: 6,
+								pitch: 0,
+								bearing: 0,
 								speed: 0.5,
 								essential: true
 							});
