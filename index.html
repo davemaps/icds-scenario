@@ -15,7 +15,7 @@
 				color: #2e2e2e;
 				margin: 0;
 			}
-			p {
+			p, ul {
 				line-height: 2rem;
 				font-family: 'Newsreader', serif;
 				font-weight: 300;
@@ -468,7 +468,8 @@
 										0, 0.1,
 										1, 0.8
 									]
-								}
+								},
+								firstSymbolId
 							});
 							map.addLayer(
 								{
@@ -514,7 +515,8 @@
 										0, 0.1,
 										1, 0.8
 									]
-								}
+								},
+								firstSymbolId
 							});
 							map.addLayer(
 								{
@@ -560,7 +562,8 @@
 										0, 0.1,
 										1, 0.8
 									]
-								}
+								},
+								firstSymbolId
 							});
 							map.addLayer(
 								{
@@ -606,7 +609,8 @@
 										0, 0.1,
 										1, 0.8
 									]
-								}
+								},
+								firstSymbolId
 							});
 					
 							map.on('click', 'clusters', function (e) {
@@ -1054,7 +1058,8 @@
 											40, 0.95
 										]
 									}
-								}
+								},
+								firstSymbolId
 							);
 							mapVoronoi.addLayer(
 								{
@@ -1075,7 +1080,8 @@
 											40, 0.95
 										]
 									}
-								}
+								},
+								firstSymbolId
 							);
 							mapVoronoi.addLayer(
 								{
@@ -1096,7 +1102,8 @@
 											40, 0.95
 										]
 									}
-								}
+								},
+								firstSymbolId
 							);
 
 							mapVoronoi.on('click', 'voronoiStatsTotal', function (e) {
@@ -1383,7 +1390,8 @@
 									layout: {
 										'visibility': 'none'
 									}
-								}
+								},
+								firstSymbolId
 							);
 							mapPopDot.addLayer( {
 									id: "popDot30",
@@ -1392,7 +1400,8 @@
 									layout: {
 										'visibility': 'none'
 									}
-								}
+								},
+								firstSymbolId
 							);
 							mapPopDot.addLayer( {
 									id: "popDot35",
@@ -1401,7 +1410,8 @@
 									layout: {
 										'visibility': 'none'
 									}
-								}
+								},
+								firstSymbolId
 							);
 							
 							mapPopDot.scrollZoom.disable();
@@ -1483,10 +1493,75 @@
 				
 			</div>
 
+			<div class="scrolly">
+				<figure class="sticky" style="height: 50vh; top: 0; background-color: #f4f4f2;">
+				</figure>
+
+				<article style="max-width: 67vw;">
+					<div class='step' data-index='20'>
+						<h1>Informing Vaccination Campaign Strategy</h1>
+
+						<div class="step-box" style="display: flex; flex-direction: row;">
+							<div style="width: 40%;">
+								<p>The data point to establishing three priorities for public health officials when targeting vaccination campaigns:</p>
+							</div>
+							<div style="width: 60%;">
+							</div>
+						</div>
+						<div class="step-box" style="display: flex; flex-direction: row;">
+							<div style="width: 60%;">
+							</div>
+							<div style="width: 40%;">
+								<p><strong>1. Areas with low seroprevalence</strong><br>
+									Because people move across the landscape and carry the pathogen with them, it is important to prioritize vaccinating those in areas that have not yet had wide exposure.
+								</p>
+							</div>
+						</div>
+						<div class="step-box" style="display: flex; flex-direction: row;">
+							<div style="width: 50%;">
+								<p><strong>2. The young</strong> *<br>
+									In general, the younger an individual&rsquo;s age in our test result data, the less likely they were to have antibodies and be protected from the disease.
+								</p>
+							</div>
+							<div style="width: 50%;">
+							</div>
+						</div>
+						<div class="step-box" style="display: flex; flex-direction: row;">
+							<div style="width: 60%;">
+							</div>
+							<div style="width: 40%;">
+								<p><strong>3. The elderly</strong> *<br>
+									We can assume from the data that the older an individual is, the more susceptible they are to catching the disease. Areas where older individuals still have low rates of antibodies should be given highest priority for vaccination.
+								</p>								
+							</div>
+						</div>
+						<div class="step-box" style="display: flex; flex-direction: row;">
+							<div style="width: 20%;">
+							</div>
+							<div style="width: 65%;">
+								<p><em>* It is impossible to know from this data alone if:</em></p>
+								<ul>
+									<li><em>Symptom and outcome severity vary by age</em></li>
+									<li><em>Individuals of different ages spread the disease at the same rate</em></li>
+								</ul>
+							</div>
+							<div style="width: 15%;">
+							</div>
+						</div>
+					</div>
+					<div class='step' data-index='21' style="padding-top: 33vh; min-height: 67vh;">
+						<div class="step-box" style="text-align: center;">
+							<p>State and local governments will be instrumental in rolling out the vaccines.</p>
+							<p>Given the above priorities, which areas should be early targets for vaccination campaigns?</p>
+						</div>
+					</div>
+				</article>
+			</div>
+
 		</section>
 		
 		<section style="height: 1000px;">
-			<p>Text at the end</p>
+			<p>Extrude 3D by number of people who do not have antibodies</p>
 			<p>Text at the end</p>
 			<p>Text at the end</p>
 			<p>Text at the end</p>

@@ -8,7 +8,7 @@
 <script src="https://api.mapbox.com/mapbox-gl-js/v2.1.1/mapbox-gl.js"></script>
 <style>
 body { margin: 0; padding: 0; }
-#map { position: absolute; top: 0; bottom: 0; width: 100%; }
+#mapAdmin { position: absolute; top: 0; bottom: 0; width: 100%; }
 </style>
 </head>
 <body>
@@ -17,12 +17,12 @@ body { margin: 0; padding: 0; }
 <!-- Promise polyfill script required to use Mapbox GL Geocoder in IE 11 -->
 <script src="https://cdn.jsdelivr.net/npm/es6-promise@4/dist/es6-promise.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/es6-promise@4/dist/es6-promise.auto.min.js"></script>    
-<div id="map"></div>
+<div id="mapAdmin"></div>
 
 <script>
     mapboxgl.accessToken = 'pk.eyJ1IjoiZGF2ZW1jbGF1Z2hsaW4iLCJhIjoiY2p4bzBlaGJ5MDF3NzNscXA5MnJyeW4xcyJ9.RlsTLBiHzI-gxBHMKZvWCg';
-    var map = new mapboxgl.Map({
-        container: 'map',
+    var mapAdmin = new mapboxgl.Map({
+        container: 'mapAdmin',
         style: 'mapbox://styles/mapbox/light-v10',
         center: [8, 9],
         zoom: 6
@@ -76,7 +76,7 @@ body { margin: 0; padding: 0; }
         return geocodes;
     };
 
-    map.addControl(
+    mapAdmin.addControl(
         new MapboxGeocoder({
             accessToken: mapboxgl.accessToken,
             localGeocoder: coordinatesGeocoder,
@@ -84,10 +84,10 @@ body { margin: 0; padding: 0; }
             mapboxgl: mapboxgl
         })
     );
-    map.addControl(new mapboxgl.NavigationControl());
+    mapAdmin.addControl(new mapboxgl.NavigationControl());
 
-    map.on('load', function () {
-        var layers = map.getStyle().layers;
+    mapAdmin.on('load', function () {
+        var layers = mapAdmin.getStyle().layers;
         var firstSymbolId;
         for (var i = 0; i < layers.length; i++) {
             if (layers[i].type === 'symbol') {
@@ -96,17 +96,17 @@ body { margin: 0; padding: 0; }
             }
         }
 
-        map.addSource('admin-l2', {
+        mapAdmin.addSource('admin-l2', {
             type: 'vector',
             url: 'mapbox://davemclaughlin.ckllmj5nv01b226nsxwbqubk4-1abs7'
         });
 
-        map.addSource('admin-l3', {
+        mapAdmin.addSource('admin-l3', {
             type: 'vector',
             url: 'mapbox://davemclaughlin.ckllmhupe09u820po3g63txgp-11v5s'
         });
 
-        map.addLayer(
+        mapAdmin.addLayer(
             {
                 id: 'admin-l2',
                 type: 'fill',
@@ -129,30 +129,34 @@ body { margin: 0; padding: 0; }
             firstSymbolId
         );
 
-        map.addLayer(
+        mapAdmin.addLayer(
             {
                 id: 'admin-l3',
-                type: 'fill',
+                type: 'fill-extrusion',
                 source: 'admin-l3',
                 'source-layer': 'admin-l3',
                 minzoom: zoomThreshold,
                 paint: {
-                    'fill-color': ['interpolate', ['linear'], ['/', ['get', 'seroTot'], ['get', 'countTot']],
+                    'fill-extrusion-color': ['interpolate', ['linear'], ['/', ['get', 'seroTot'], ['get', 'countTot']],
                         0, '#2c7fb8',
                         1, '#f8f980'
                     ],
-                    'fill-opacity': ['step', ['get', 'countTot'],
+                    'fill-extrusion-height': ['/', ['get', 'pop'], 10],
+                    'fill-extrusion-opacity': 1
+                    /*
+                    'fill-extrusion-opacity': ['step', ['get', 'countTot'],
                         0,
                         1,
                         0.8
-                    ],
+                    ]
                     'fill-outline-color': '#eee'
+                    */
                 }
             },
             firstSymbolId
         );
 
-        map.on('click', 'admin-l2', function (e) {
+        mapAdmin.on('click', 'admin-l2', function (e) {
             var msgHeading = '<strong>' + e.features[0].properties.statename + '</strong> <em>' + e.features[0].properties.capcity + '</em><br>';
             var msgSero;
             if (e.features[0].properties.countTot == 0) {
@@ -166,10 +170,10 @@ body { margin: 0; padding: 0; }
                 .setHTML(
                     msgHeading.concat(msgSero)
                 )
-                .addTo(map);
+                .addTo(mapAdmin);
         });
 
-        map.on('click', 'admin-l3', function (e) {
+        mapAdmin.on('click', 'admin-l3', function (e) {
             var msgHeading = '<strong>' + e.features[0].properties.lganame + '</strong> <em>' + e.features[0].properties.statename + '</em><br>';
             var msgSero;
             if (e.features[0].properties.countTot == 0) {
@@ -182,20 +186,20 @@ body { margin: 0; padding: 0; }
                 .setHTML(
                     msgHeading.concat(msgSero)
                 )
-                .addTo(map);
+                .addTo(mapAdmin);
         });
 
-        map.on('mouseenter', 'admin-l2', function () {
-            map.getCanvas().style.cursor = 'pointer';
+        mapAdmin.on('mouseenter', 'admin-l2', function () {
+            mapAdmin.getCanvas().style.cursor = 'pointer';
         });
-        map.on('mouseleave', 'admin-l2', function () {
-            map.getCanvas().style.cursor = '';
+        mapAdmin.on('mouseleave', 'admin-l2', function () {
+            mapAdmin.getCanvas().style.cursor = '';
         });
-        map.on('mouseenter', 'admin-l3', function () {
-            map.getCanvas().style.cursor = 'pointer';
+        mapAdmin.on('mouseenter', 'admin-l3', function () {
+            mapAdmin.getCanvas().style.cursor = 'pointer';
         });
-        map.on('mouseleave', 'admin-l3', function () {
-            map.getCanvas().style.cursor = '';
+        mapAdmin.on('mouseleave', 'admin-l3', function () {
+            mapAdmin.getCanvas().style.cursor = '';
         });
     });
 </script>
