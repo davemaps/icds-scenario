@@ -274,6 +274,11 @@
 							<p>To date, <strong>31,425 individuals</strong> have been tested for the presence of antibodies.</p>
 							<p>19,881 tested positive, for a nation-wide rate of <strong>seroprevalence of 63%</strong>.</p>
 						</div>
+						<div class="step-box" style="text-align: center;">
+							<p>Extrapolated to Nigeria&rsquo;s population of <strong>206,630,269</strong>,</p>
+							<p><strong>130,724,433</strong> individuals have antibodies to the disease,</p>
+							<p>while there are <strong>75,905,836</strong> individuals who do not.</p>
+						</div>
 					</div>
 					<div class='step' data-index='1'>
 						<h1>Seroprevalence by Age</h1>
@@ -1716,7 +1721,6 @@
 										'<tr><th style="text-align: left;">30&ndash;34</th><td>' + (e.features[0].properties.sero30 / e.features[0].properties.count30).toLocaleString("en", {style: "percent"}) + '</td></tr>' +
 										'<tr><th style="text-align: left;">35&ndash;39</th><td>' + (e.features[0].properties.sero35 / e.features[0].properties.count35).toLocaleString("en", {style: "percent"}) + '</td></tr></table>';
 								}
-					
 								new mapboxgl.Popup()
 									.setLngLat(e.lngLat)
 									.setHTML(
@@ -1724,14 +1728,22 @@
 									)
 									.addTo(mapAdmin);
 							});
-					
+
 							mapAdmin.on('click', 'admin-l3', function (e) {
-								var msgHeading = '<strong>' + e.features[0].properties.lganame + '</strong> <em>' + e.features[0].properties.statename + '</em><br>';
+								var msgHeading =
+									'<strong>' + e.features[0].properties.lganame + '</strong> <em>' + e.features[0].properties.statename + '</em><br><br>' +
+									'<table><tr><th style="text-align: left;">Total Population</th><td>' + e.features[0].properties.pop.toLocaleString("en") + '</td></tr>';
 								var msgSero;
 								if (e.features[0].properties.countTot == 0) {
-									var msgSero = 'No data';
+									var msgSero = '<tr><th style="text-align: left;">Without Antibodies</th><td>No data</td></tr></table>';
 								} else {
-									var msgSero = 'Seroprevalence: ' + (e.features[0].properties.seroTot / e.features[0].properties.countTot).toLocaleString("en", {style: "percent"})
+									var msgSero =
+										'<tr><th style="text-align: left;">Without Antibodies</th><td>' + Math.round(e.features[0].properties.pop - (e.features[0].properties.pop * (e.features[0].properties.seroTot / e.features[0].properties.countTot))).toLocaleString("en") + '</td></tr></table>' +
+										'<br><strong>Seroprevalence</strong>' + 
+										'<table><tr><th style="text-align: left;">Overall</th><td>' + (e.features[0].properties.seroTot / e.features[0].properties.countTot).toLocaleString("en", {style: "percent"}) + '</td></tr>' +
+										'<tr><th style="text-align: left;">25&ndash;29</th><td>' + (e.features[0].properties.sero25 / e.features[0].properties.count25).toLocaleString("en", {style: "percent"}) + '</td></tr>' +
+										'<tr><th style="text-align: left;">30&ndash;34</th><td>' + (e.features[0].properties.sero30 / e.features[0].properties.count30).toLocaleString("en", {style: "percent"}) + '</td></tr>' +
+										'<tr><th style="text-align: left;">35&ndash;39</th><td>' + (e.features[0].properties.sero35 / e.features[0].properties.count35).toLocaleString("en", {style: "percent"}) + '</td></tr></table>';
 								}
 								new mapboxgl.Popup()
 									.setLngLat(e.lngLat)
@@ -1740,7 +1752,7 @@
 									)
 									.addTo(mapAdmin);
 							});
-					
+
 							mapAdmin.on('mouseenter', 'admin-l2', function () {
 								mapAdmin.getCanvas().style.cursor = 'pointer';
 							});
@@ -1800,7 +1812,6 @@
 		</section>
 		
 		<section style="height: 1000px;">
-			<p>Extrude 3D by number of people who do not have antibodies</p>
 			<p>Text at the end</p>
 			<p>Text at the end</p>
 			<p>Text at the end</p>
