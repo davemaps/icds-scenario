@@ -847,7 +847,7 @@
 				</figure>
 
 				<article style="max-width: 67vw;">
-					<div class='step' data-index='10'>
+					<div class='step' data-index='10' style="min-height: 67vh;">
 						<div class="step-box" style="text-align: center;">
 							<p>Exploring the existing cluster data is fun, but what if we want to predict results at any given location?</p>
 							<p style="margin-top: 4rem;">What if that location doesn&rsquo;t fall on one of our cluster points?</p>
@@ -856,9 +856,10 @@
 					<div class="step" data-index="11">
 						<h1>Predicting Antibody Status in Individuals</h1>
 						<div class="step-box" style="display: flex; flex-direction: row;">
-							<div style="width: 40%; padding-right: 6rem;">
-								<p>Less than a year into a pandemic, scientists are learning more about the disease in Nigeria. Testing individuals for the presence of antibodies builds a picture of the spread of the disease in the country.</p>
-								<p>Using test results data, which includes the age and location of the individuals tested, can help inform public policy decisions to more accurately target vaccination campaign rollouts.</p>
+							<div style="width: 40%; padding-right: 6rem; padding-top: 4rem;">
+								<p>Using a <strong>Voronoi diagram</strong>, we create polygons of area closest to each cluster point.</p>
+								<p>Now it is possible to quickly reference any location against data from the nearest cluster.</p>
+								<p>Search the map by location, then click for local stats.</p>
 							</div>
 							<div style="width: 60%;">
 								<p><img src="voronoi-illustration.gif" style="width: 100%;"></p>
@@ -1055,9 +1056,7 @@
 									}
 								}
 							);
-					
-					
-					
+
 							mapVoronoi.on('click', 'voronoiStatsTotal', function (e) {
 								if (e.features[0].properties.count == 1) {
 									var msgHeader = '<strong>1 Individual</strong><br>';
@@ -1072,11 +1071,70 @@
 									)
 									.addTo(mapVoronoi);
 							});
-					
 							mapVoronoi.on('mouseenter', 'voronoiStatsTotal', function () {
 								mapVoronoi.getCanvas().style.cursor = 'pointer';
 							});
 							mapVoronoi.on('mouseleave', 'voronoiStatsTotal', function () {
+								mapVoronoi.getCanvas().style.cursor = '';
+							});
+							mapVoronoi.on('click', 'voronoiStats25', function (e) {
+								if (e.features[0].properties.count == 1) {
+									var msgHeader = '<strong>1 Individual</strong><br>';
+								} else {
+									var msgHeader = '<strong>' + e.features[0].properties.count + ' Individuals</strong><br>';
+								}
+								new mapboxgl.Popup()
+									.setLngLat(e.lngLat)
+									.setHTML(
+										msgHeader +
+										'Seroprevalence: ' + (e.features[0].properties.sero / e.features[0].properties.count).toLocaleString("en", {style: "percent"})
+									)
+									.addTo(mapVoronoi);
+							});
+							mapVoronoi.on('mouseenter', 'voronoiStats25', function () {
+								mapVoronoi.getCanvas().style.cursor = 'pointer';
+							});
+							mapVoronoi.on('mouseleave', 'voronoiStats25', function () {
+								mapVoronoi.getCanvas().style.cursor = '';
+							});
+							mapVoronoi.on('click', 'voronoiStats30', function (e) {
+								if (e.features[0].properties.count == 1) {
+									var msgHeader = '<strong>1 Individual</strong><br>';
+								} else {
+									var msgHeader = '<strong>' + e.features[0].properties.count + ' Individuals</strong><br>';
+								}
+								new mapboxgl.Popup()
+									.setLngLat(e.lngLat)
+									.setHTML(
+										msgHeader +
+										'Seroprevalence: ' + (e.features[0].properties.sero / e.features[0].properties.count).toLocaleString("en", {style: "percent"})
+									)
+									.addTo(mapVoronoi);
+							});
+							mapVoronoi.on('mouseenter', 'voronoiStats30', function () {
+								mapVoronoi.getCanvas().style.cursor = 'pointer';
+							});
+							mapVoronoi.on('mouseleave', 'voronoiStats30', function () {
+								mapVoronoi.getCanvas().style.cursor = '';
+							});
+							mapVoronoi.on('click', 'voronoiStats35', function (e) {
+								if (e.features[0].properties.count == 1) {
+									var msgHeader = '<strong>1 Individual</strong><br>';
+								} else {
+									var msgHeader = '<strong>' + e.features[0].properties.count + ' Individuals</strong><br>';
+								}
+								new mapboxgl.Popup()
+									.setLngLat(e.lngLat)
+									.setHTML(
+										msgHeader +
+										'Seroprevalence: ' + (e.features[0].properties.sero / e.features[0].properties.count).toLocaleString("en", {style: "percent"})
+									)
+									.addTo(mapVoronoi);
+							});
+							mapVoronoi.on('mouseenter', 'voronoiStats35', function () {
+								mapVoronoi.getCanvas().style.cursor = 'pointer';
+							});
+							mapVoronoi.on('mouseleave', 'voronoiStats35', function () {
 								mapVoronoi.getCanvas().style.cursor = '';
 							});
 
@@ -1088,10 +1146,10 @@
 							mapVoronoi.setLayoutProperty('voronoiStats25', 'visibility', 'none');
 							mapVoronoi.setLayoutProperty('voronoiStats30', 'visibility', 'none');
 							mapVoronoi.setLayoutProperty('voronoiStats35', 'visibility', 'none');
-							document.getElementById('voronoiStatsTotal').className = 'active';
-							document.getElementById('voronoiStats25').className = '';
-							document.getElementById('voronoiStats30').className = '';
-							document.getElementById('voronoiStats35').className = '';
+							document.getElementById('navVoronoiAll').className = 'active';
+							document.getElementById('navVoronoi25').className = '';
+							document.getElementById('navVoronoi30').className = '';
+							document.getElementById('navVoronoi35').className = '';
 							document.getElementById('navVoronoiAll').preventDefault();
 							document.getElementById('navVoronoiAll').stopPropagation();
 						}
@@ -1100,69 +1158,67 @@
 							mapVoronoi.setLayoutProperty('voronoiStats25', 'visibility', 'visible');
 							mapVoronoi.setLayoutProperty('voronoiStats30', 'visibility', 'none');
 							mapVoronoi.setLayoutProperty('voronoiStats35', 'visibility', 'none');
-							document.getElementById('voronoiStatsTotal').className = '';
-							document.getElementById('voronoiStats25').className = 'active';
-							document.getElementById('voronoiStats30').className = '';
-							document.getElementById('voronoiStats35').className = '';
-							document.getElementById('navVoronoiAll').preventDefault();
-							document.getElementById('navVoronoiAll').stopPropagation();
+							document.getElementById('navVoronoiAll').className = '';
+							document.getElementById('navVoronoi25').className = 'active';
+							document.getElementById('navVoronoi30').className = '';
+							document.getElementById('navVoronoi35').className = '';
+							document.getElementById('navVoronoi25').preventDefault();
+							document.getElementById('navVoronoi25').stopPropagation();
 						}
 						document.getElementById('navVoronoi30').onclick = function() {
 							mapVoronoi.setLayoutProperty('voronoiStatsTotal', 'visibility', 'none');
 							mapVoronoi.setLayoutProperty('voronoiStats25', 'visibility', 'none');
 							mapVoronoi.setLayoutProperty('voronoiStats30', 'visibility', 'visible');
 							mapVoronoi.setLayoutProperty('voronoiStats35', 'visibility', 'none');
-							document.getElementById('voronoiStatsTotal').className = '';
-							document.getElementById('voronoiStats25').className = '';
-							document.getElementById('voronoiStats30').className = 'active';
-							document.getElementById('voronoiStats35').className = '';
-							document.getElementById('navVoronoiAll').preventDefault();
-							document.getElementById('navVoronoiAll').stopPropagation();
+							document.getElementById('navVoronoiAll').className = '';
+							document.getElementById('navVoronoi25').className = '';
+							document.getElementById('navVoronoi30').className = 'active';
+							document.getElementById('navVoronoi35').className = '';
+							document.getElementById('navVoronoi30').preventDefault();
+							document.getElementById('navVoronoi30').stopPropagation();
 						}
 						document.getElementById('navVoronoi35').onclick = function() {
 							mapVoronoi.setLayoutProperty('voronoiStatsTotal', 'visibility', 'none');
 							mapVoronoi.setLayoutProperty('voronoiStats25', 'visibility', 'none');
 							mapVoronoi.setLayoutProperty('voronoiStats30', 'visibility', 'none');
 							mapVoronoi.setLayoutProperty('voronoiStats35', 'visibility', 'visible');
-							document.getElementById('voronoiStatsTotal').className = '';
-							document.getElementById('voronoiStats25').className = '';
-							document.getElementById('voronoiStats30').className = '';
-							document.getElementById('voronoiStats35').className = 'active';
-							document.getElementById('navVoronoiAll').preventDefault();
-							document.getElementById('navVoronoiAll').stopPropagation();
+							document.getElementById('navVoronoiAll').className = '';
+							document.getElementById('navVoronoi25').className = '';
+							document.getElementById('navVoronoi30').className = '';
+							document.getElementById('navVoronoi35').className = 'active';
+							document.getElementById('navVoronoi35').preventDefault();
+							document.getElementById('navVoronoi35').stopPropagation();
 						}
 					</script>
 				</figure>
-
-
-				<!--  step text   -->
-				<article style="width: 67vw;">
-					<div class='step' data-index='11' style="min-height: 67vh;">
-						<h1 style="-webkit-text-stroke: 1px #f4f4f2;">Cluster Locations</h1>
-					</div>
+				<article style="height: 50vh; width: 0;">
+					<div class="step" data-index="12"></div>
 				</article>
-				<article style="max-width: 25vw; margin: 0 auto 0 0;">
-					<div class="step step-box-map" data-index="12" style="padding-top: 4rem;">
-						<p>Explainer/legend</p>
-					</div>
-					<div class="step step-box-map" data-index="13">
-						<p>Lagos</p>
-					</div>
-					<div class="step step-box-map" data-index="14">
-						<p>Rural northwest</p>
-					</div>
-					<div class="step step-box-map" data-index="15">
-						<p>Hills in the east</p>
-					</div>
-					<div class="step step-box-map" data-index="16" style="margin-bottom: 20vh;">
-						<p>Mid-size cities like Enugu</p>
-					</div>
-				</article>
-				<article style="height: 100vh; width: 0;">
-					<div class="step" data-index="17"></div>
-				</article>
-				
 			</div>
+
+			<div class="scrolly">
+				<figure class="sticky" style="height: 33vh; top: 0; background-color: #f4f4f2;">
+				</figure>
+
+				<article style="max-width: 67vw;">
+					<div class='step' data-index='13' style="min-height: 67vh;">
+						<p style="text-align: center;"><strong>Caution!</strong></p>
+						<div class="step-box" style="display: flex; flex-direction: row;">
+							<div style="width: 60%; padding-right: 6rem;">
+								<img src="election-map.jpg" style="width: 100%;">
+							</div>
+							<div style="width: 40%;">
+								<p>Viewing data as filled polygons on a map can lead to the impression that the phenomenon is evenly distributed throughout the areas.</p>
+								<p>Just like land doesn&rsquo;t vote,<br>
+									the land does not catch this disease<br>
+									&mdash; people do.</p>
+							</div>
+						</div>
+						<p style="margin-top: 4rem; text-align: center;">So let&rsquo;s map the people.</p>
+					</div>
+				</article>
+			</div>
+
 		</section>
 		
 		<section style="height: 1000px;">
