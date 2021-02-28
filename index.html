@@ -15,7 +15,7 @@
 				color: #2e2e2e;
 				margin: 0;
 			}
-			p, ul {
+			p, ul, ol {
 				line-height: 2rem;
 				font-family: 'Newsreader', serif;
 				font-weight: 300;
@@ -269,6 +269,12 @@
 				</figure>
 
 				<article style="max-width: 67vw;">
+					<div class="step" data-index="1001" style="min-height: 67vh;">
+						<div class="step-box" style="text-align: center;">
+							<p>To date, <strong>31,425 individuals</strong> have been tested for the presence of antibodies.</p>
+							<p>19,881 tested positive, for a nation-wide rate of <strong>seroprevalence of 63%</strong>.</p>
+						</div>
+					</div>
 					<div class='step' data-index='1'>
 						<h1>Seroprevalence by Age</h1>
 
@@ -287,7 +293,7 @@
 					</div>
 					<div class='step' data-index='2' style="min-height: 67vh;">
 						<div class="step-box" style="text-align: center;">
-							<p>To date, <strong>31,425 individuals</strong> have been tested for antibodies in <strong>3,343 locations</strong>.</p>
+							<p>The test results have been collected from <strong>3,343 locations</strong>.</p>
 						</div>
 					</div>
 				</article>
@@ -1560,12 +1566,6 @@
 
 			<div class="scrolly">
 				<figure class="sticky" style="height: 100vh; top: 0;">
-					<nav id="navAdmin">
-						<a class="active" id="navAdmin">All Ages</a>
-						<a class="" id="navAdmin">25&ndash;29 Years</a>
-						<a class="" id="navAdmin">30&ndash;34 Years</a>
-						<a class="" id="navAdmin">35&ndash;39 Years</a>
-					</nav>
 					<div id="mapAdmin" style="position: absolute; width: 100%; top: 0; bottom: 0;"></div>
 					
 					<script>
@@ -1696,17 +1696,8 @@
 											delay: 0
 										},
 										'fill-extrusion-opacity': 0.8,
-										/*
-										'fill-opacity': ['step', ['get', 'countTot'],
-											0,
-											1,
-											0.8
-										],
-										'fill-outline-color': '#eee'
-										*/
 									}
-								},
-								firstSymbolId
+								}
 							);
 
 							mapAdmin.on('click', 'admin-l2', function (e) {
@@ -1771,20 +1762,39 @@
 
 
 				<article style="max-width: 25vw; margin: 0 auto 0 0;">
-					<div class="step step-box-map-dark" data-index="23" style="padding-top: 4rem;">
-						<p>States with lowest overall seroprevalence</p>
+					<div class="step step-box-map" data-index="23" style="padding-top: 4rem;">
+						<p>The nine states with the lowest rates of seroprevalence are all in the southern part of the country:</p>
+						<ol>
+							<li>Cross River: 51%</li>
+							<li>Benue: 52%</li>
+							<li>Akwa Ibom: 53%</li>
+							<li>Bayelsa: 53%</li>
+							<li>Edo: 53%</li>
+							<li>Rivers: 53%</li>
+							<li>Abia: 54%</li>
+							<li>Osun: 55%</li>
+							<li>Delta: 55%</li>
+						</ol>
 					</div>
-					<div class="step step-box-map-dark" data-index="24">
+					<div class="step step-box-map" data-index="24">
 						<p>Local governments</p>
 					</div>
-					<div class="step step-box-map-dark" data-index="25">
+					<div class="step step-box-map" data-index="25">
 						<p>Localities with lowest overall seroprevalence</p>
 					</div>
 				</article>
-				<article style="height: 100vh; width: 0;">
-					<div class="step" data-index="26"></div>
+				<article>
+					<div class="step" data-index="26">
+						<h1>Population Without Antibodies</h1>
+					</div>
 				</article>
-				
+				<article style="max-width: 25vw; margin: 0 auto 0 0; padding-top: 4rem;">
+					<div class="step step-box-map" data-index="27">
+						<p>Using height to represent the population of individuals without antibodies, we get a raw view of how many and where they are.</p>
+					</div>
+				</article>
+				<article style="min-height: 100vh; width: 0%;">
+				</article>
 			</div>
 
 		</section>
@@ -1829,7 +1839,7 @@
 
 							if (seroByAgeChartLoaded == 0) {
 								// set the dimensions and margins of the graph
-								var margin = {top: 10, right: 10, bottom: 30, left: 40},
+								var margin = {top: 10, right: 10, bottom: 50, left: 70},
 									width = 500 - margin.left - margin.right,
 									height = 400 - margin.top - margin.bottom;
 								// append the svg object to the body of the page
@@ -1858,6 +1868,10 @@
 											.delay(250)
 											.attr("opacity", 1)
 										.call(d3.axisBottom(x));
+									svg.append("text")
+										.attr("x", (width / 2))
+										.attr("y", height + 40)
+										.text("Age");
 									// Add Y axis
 									var y = d3.scaleLinear()
 										.domain( [ 0, 1 ])
@@ -1868,6 +1882,11 @@
 											.delay(250)
 											.attr("opacity", 1)
 										.call(d3.axisLeft(y).tickFormat(d3.format(".0%")));
+									svg.append("text")
+										.attr("x", -250)
+										.attr("y", -55)
+										.attr("transform", "rotate(-90)")
+										.text("Rate of Seroprevalence");
 
 									function length(path) {
 										return d3.create("svg:path").attr("d", path).node().getTotalLength();
@@ -2052,8 +2071,8 @@
 						}
 						if (index == 23) {
 							mapAdmin.flyTo({
-								center: { lon: 6.8, lat: 9 },
-								zoom: 6,
+								center: { lon: 6.25, lat: 7.5 },
+								zoom: 6.4,
 								pitch: 0,
 								bearing: 0,
 								speed: 0.1,
@@ -2066,7 +2085,7 @@
 									'step',
 									['/', ['get', 'seroTot'], ['get', 'countTot']],
 									'#f00',
-									0.6,
+									0.56,
 									'rgba(255,255,255,0)'
 								]
 							);
@@ -2097,6 +2116,31 @@
 						}
 						*/
 						if (index == 26) {
+							mapAdmin.setLayoutProperty(
+								'country-label',
+								'visibility',
+								'none'
+							);
+							mapAdmin.setLayoutProperty(
+								'state-label',
+								'visibility',
+								'none'
+							);
+							mapAdmin.setLayoutProperty(
+								'settlement-major-label',
+								'visibility',
+								'none'
+							);
+							mapAdmin.setLayoutProperty(
+								'settlement-minor-label',
+								'visibility',
+								'none'
+							);
+							mapAdmin.setLayoutProperty(
+								'settlement-subdivision-label',
+								'visibility',
+								'none'
+							);
 							mapAdmin.setPaintProperty(
 								'admin-l3',
 								'fill-extrusion-height',
@@ -2110,6 +2154,16 @@
 								speed: 0.1,
 								essential: true
 							});
+						}
+						if (index == 27) {
+							mapAdmin.flyTo({
+								center: { lon: 8, lat: 9 },
+								zoom: 7,
+								pitch: 60,
+								bearing: -60,
+								speed: 0.1,
+								essential: true
+							})
 						}
 					},
 					exit: el => {
