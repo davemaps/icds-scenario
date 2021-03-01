@@ -878,7 +878,11 @@
 				</article>
 				<article style="max-width: 25vw; margin: 0 auto 0 0;">
 					<div class="step step-box-map" data-index="4" style="padding-top: 4rem;">
-						<p>Explainer/legend</p>
+						<p>Size of circle represents # of tests</p>
+						<p>Yellow = High Rate<br>
+							Blue = Low Rate</p>
+						<p>Filter by age</p>
+						<p>Click for cluster data</p>
 					</div>
 					<div class="step step-box-map" data-index="5">
 						<p>Lagos</p>
@@ -1489,7 +1493,10 @@
 				</article>
 				<article style="max-width: 25vw; margin: 0 auto 0 0;">
 					<div class="step step-box-map-dark" data-index="16" style="padding-top: 4rem;">
-						<p>Explainer/legend</p>
+						<p>Population estimates for each 100m&sup2;</p>
+						<p>Brighter points =<br>&nbsp;Higher Pop. Density</p>
+						<p>Yellow = High Rate<br>
+							Blue = Low Rate</p>
 					</div>
 					<div class="step step-box-map-dark" data-index="17">
 						<p>Port Harcourt</p>
@@ -1881,6 +1888,7 @@
 								<p>What could I quickly learn about the situation?</p>
 								<p>Will I need to clean or convert the data?</p>
 								<p>Does this data give me everything I need to build the final product?</p>
+								<p>Will I need to make accomodations due to any datasets?</p>
 							</div>
 							<div style="width: 15%;"></div>
 						</div>
@@ -2302,21 +2310,6 @@
 								'visibility',
 								'none'
 							);
-							mapAdmin.setLayoutProperty(
-								'settlement-major-label',
-								'visibility',
-								'none'
-							);
-							mapAdmin.setLayoutProperty(
-								'settlement-minor-label',
-								'visibility',
-								'none'
-							);
-							mapAdmin.setLayoutProperty(
-								'settlement-subdivision-label',
-								'visibility',
-								'none'
-							);
 							mapAdmin.setPaintProperty(
 								'admin-l3',
 								'fill-extrusion-height',
@@ -2339,7 +2332,7 @@
 								bearing: -60,
 								speed: 0.1,
 								essential: true
-							})
+							});
 						}
 						if (index == 33) {
 							if (seroByAgeChart3Loaded == 0) {
