@@ -878,23 +878,28 @@
 				</article>
 				<article style="max-width: 25vw; margin: 0 auto 0 0;">
 					<div class="step step-box-map" data-index="4" style="padding-top: 4rem;">
-						<p>Size of circle represents # of tests</p>
+						<p>Size of circle represents<br># of tests</p>
 						<p>Yellow = High Rate<br>
 							Blue = Low Rate</p>
 						<p>Filter by age</p>
 						<p>Click for cluster data</p>
 					</div>
 					<div class="step step-box-map" data-index="5">
-						<p>Lagos</p>
+						<p><img src="lagos-skyline.jpg" style="width: 100%;"><br>
+							Lagos
+						</p>
 					</div>
 					<div class="step step-box-map" data-index="6">
-						<p>Rural northwest</p>
+						<p><img src="sokoto.jpg" style="width: 100%;"><br>
+							Rural northwest</p>
 					</div>
 					<div class="step step-box-map" data-index="7">
-						<p>Hills in the east</p>
+						<p><img src="cross-river.jpg" style="width: 100%;"><br>
+							Hills in the east</p>
 					</div>
 					<div class="step step-box-map" data-index="8" style="margin-bottom: 20vh;">
-						<p>Mid-size cities like Enugu</p>
+						<p><img src="enugu.jpg" style="width: 100%;"><br>
+							Mid-size cities like Enugu</p>
 					</div>
 				</article>
 				<article style="height: 100vh; width: 0;">
@@ -1499,10 +1504,12 @@
 							Blue = Low Rate</p>
 					</div>
 					<div class="step step-box-map-dark" data-index="17">
-						<p>Port Harcourt</p>
+						<p><img src="port-harcourt.jpg" style="width: 100%;"><br>
+							Port Harcourt</p>
 					</div>
 					<div class="step step-box-map-dark" data-index="18">
-						<p>Rural northeast</p>
+						<p><img src="yola.jpg" style="width: 100%;"><br>
+							Rural northeast</p>
 					</div>
 				</article>
 				<article style="height: 100vh; width: 0;">
@@ -1703,10 +1710,7 @@
 											1, '#f8f980'
 										],
 										'fill-extrusion-height': 0,
-										'fill-extrusion-height-transition': {
-											duration: 10000,
-											delay: 0
-										},
+										'fill-extrusion-base': 0,
 										'fill-extrusion-opacity': 0.8,
 									}
 								}
@@ -1903,7 +1907,8 @@
 									<li>Sample data</li>
 									<li>OpenStreetMap</li>
 									<li>Population data and administrative boundaries from GRID&sup3; Nigeria</li>
-									<li>Stock media from Adobe</li>
+									<li>Creative Commons stock imagery</li>
+									<li>Stock footage from Adobe</li>
 							</div>
 							<div style="width: 50%;">
 								<p>Cross-platform, free and open source software!</p>
@@ -2313,7 +2318,19 @@
 							mapAdmin.setPaintProperty(
 								'admin-l3',
 								'fill-extrusion-height',
-								['/', ['*', ['get', 'pop'], ['/', ['get', 'seroTot'], ['get', 'countTot']]], 5]
+								[
+									'*',
+									[
+										'*',
+										['get', 'pop'],
+										[
+											'/',
+											['get', 'seroTot'],
+											['get', 'countTot']
+										]
+									],
+									.2
+								]
 							);
 							mapAdmin.flyTo({
 								center: { lon: 6.53847, lat: 7.81216 },
