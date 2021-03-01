@@ -1890,19 +1890,14 @@
 					<div class="step" data-index="32">
 						<h1>Resources</h1>
 						<div class="step-box" style="display: flex; flex-direction: row;">
-							<div style="width: 15%;"></div>
-							<div style="width: 70%;">
+							<div style="width: 50%; padding-right: 4rem;">
 								<ul>
 									<li>Sample data</li>
 									<li>OpenStreetMap</li>
 									<li>Population data and administrative boundaries from GRID&sup3; Nigeria</li>
 									<li>Stock media from Adobe</li>
 							</div>
-							<div style="width: 15%;"></div>
-						</div>
-						<div class="step-box" style="display: flex; flex-direction: row;">
-							<div style="width: 15%;"></div>
-							<div style="width: 70%;">
+							<div style="width: 50%;">
 								<p>Cross-platform, free and open source software!</p>
 								<ul>
 									<li>QGIS</li>
@@ -1921,7 +1916,6 @@
 									<li>Git and GitHub</li>
 								</ul>
 							</div>
-							<div style="width: 15%;"></div>
 						</div>
 					</div>
 				</article>
@@ -1940,10 +1934,13 @@
 
 						<div class="step-box" style="display: flex; flex-direction: row;">
 							<div style="width: 60%; padding-right: 4em;">
-								<p>Insert screenshot of charting all three</p>
+								<div id="seroByAgeChart3"></div>
+								<script>
+									var seroByAgeChart3Loaded = 0;
+								</script>
 							</div>
 							<div style="width: 40%;">
-								<img src="mapping-3.png" style="width: 100%;">
+								<img src="mapping-3.png" style="max-width: 100%; max-height: 400px; float: right;">
 							</div>
 						</div>
 						<div class="step-box" style="display: flex; flex-direction: row;">
@@ -2343,6 +2340,200 @@
 								speed: 0.1,
 								essential: true
 							})
+						}
+						if (index == 33) {
+							if (seroByAgeChart3Loaded == 0) {
+								// set the dimensions and margins of the graph
+								var margin = {top: 10, right: 10, bottom: 50, left: 70},
+									width = 500 - margin.left - margin.right,
+									height = 400 - margin.top - margin.bottom;
+								// append the svg object to the body of the page
+								var svg = d3.select("#seroByAgeChart3")
+								.append("svg")
+									.attr("width", width + margin.left + margin.right)
+									.attr("height", height + margin.top + margin.bottom)
+								.append("g")
+									.attr("transform",
+										"translate(" + margin.left + "," + margin.top + ")");
+
+
+								//Read the data
+								d3.csv("summarySeroStats.csv",
+
+								// Now I can use this dataset:
+								function(data) {
+									// Add X axis
+									var x =  d3.scaleLinear()
+										.domain( [40, 24])
+										.range([ width, 0 ]);
+									svg.append("g")
+										.attr("transform", "translate(0," + height + ")")
+										.attr("opacity", 0)
+										.transition(500)
+											.delay(250)
+											.attr("opacity", 1)
+										.call(d3.axisBottom(x));
+									svg.append("text")
+										.attr("x", (width / 2))
+										.attr("y", height + 40)
+										.text("Age");
+									// Add Y axis
+									var y = d3.scaleLinear()
+										.domain( [ 0, 1 ])
+										.range([ height, 0 ]);
+									svg.append("g")
+										.attr("opacity", 0)
+										.transition(500)
+											.delay(250)
+											.attr("opacity", 1)
+										.call(d3.axisLeft(y).tickFormat(d3.format(".0%")));
+									svg.append("text")
+										.attr("x", -250)
+										.attr("y", -55)
+										.attr("transform", "rotate(-90)")
+										.text("Rate of Seroprevalence");
+
+									function length(path) {
+										return d3.create("svg:path").attr("d", path).node().getTotalLength();
+									}
+									line = d3.line()
+										.x(function(d) { return x(d.age) })
+										.y(function(d) { return y(d.rate) })
+									const l = length(line(data));
+									lineB = d3.line()
+										.x(function(d) { return x(d.age) })
+										.y(function(d) { return y(d.rateB) })
+									const lB = length(line(data));
+									lineC = d3.line()
+										.x(function(d) { return x(d.age) })
+										.y(function(d) { return y(d.rateC) })
+									const lC = length(line(data));
+
+									// create a tooltip
+									var Tooltip = d3.select("#seroByAgeChart3")
+										.append("div")
+										.style("display", "none")
+										.attr("class", "tooltip")
+										.style("padding", "5px")
+									
+									// Three function that change the tooltip when user hover / move / leave a cell
+									var mouseover = function(d) {
+										Tooltip
+										.style("display", "block")
+									}
+									var mousemove = function(d) {
+										Tooltip
+										.html("<strong>Age " + d.age + "</strong><br>" + "Seroprevalence: " + d3.format(".0%")(d.rate))
+										.style("position", "relative")
+										.style("left", "300px")
+										.style("top", "-150px")
+									}
+									var mouseleave = function(d) {
+										Tooltip
+										.style("display", "none")
+									}
+
+									// Add the points
+									svg
+										.append("g")
+										.selectAll("dot")
+										.data(data)
+										.enter()
+										.append("circle")
+											.attr("cx", function(d) { return x(d.age) } )
+											.attr("cy", function(d) { return y(d.rate) } )
+											.attr("r", 6)
+											.attr("fill", "#2c7fb8")
+											.attr("opacity", 0)
+											.on("mouseover", mouseover)
+											.on("mousemove", mousemove)
+											.on("mouseleave", mouseleave)
+											.transition()
+												.delay(500)
+												.duration(500)
+												.attr("opacity", 1)
+									// Add the line
+									svg.append("path")
+										.datum(data)
+										.attr("fill", "none")
+										.attr("stroke", "#2c7fb8")
+										.attr("stroke-width", 2.5)
+										.attr("stroke-dasharray", `0,${l}`)
+										.attr("d", line)
+										.transition()
+											.delay(1000)
+											.duration(3000)
+											.ease(d3.easeLinear)
+											.attr("stroke-dasharray", `${l},${l}`);
+									// Add the points
+									svg
+										.append("g")
+										.selectAll("dot")
+										.data(data)
+										.enter()
+										.append("circle")
+											.attr("cx", function(d) { return x(d.age) } )
+											.attr("cy", function(d) { return y(d.rateB) } )
+											.attr("r", 6)
+											.attr("fill", "#fc8d62")
+											.attr("opacity", 0)
+											.on("mouseover", mouseover)
+											.on("mousemove", mousemove)
+											.on("mouseleave", mouseleave)
+											.transition()
+												.delay(5500)
+												.duration(500)
+												.attr("opacity", 1)
+									// Add the line
+									svg.append("path")
+										.datum(data)
+										.attr("fill", "none")
+										.attr("stroke", "#fc8d62")
+										.attr("stroke-width", 2.5)
+										.attr("stroke-dasharray", `0,${lB}`)
+										.attr("d", lineB)
+										.transition()
+											.delay(6000)
+											.duration(3000)
+											.ease(d3.easeLinear)
+											.attr("stroke-dasharray", `${lB},${lB}`);
+									// Add the points
+									svg
+										.append("g")
+										.selectAll("dot")
+										.data(data)
+										.enter()
+										.append("circle")
+											.attr("cx", function(d) { return x(d.age) } )
+											.attr("cy", function(d) { return y(d.rateC) } )
+											.attr("r", 6)
+											.attr("fill", "#66c2a5")
+											.attr("opacity", 0)
+											.on("mouseover", mouseover)
+											.on("mousemove", mousemove)
+											.on("mouseleave", mouseleave)
+											.transition()
+												.delay(6500)
+												.duration(500)
+												.attr("opacity", 1)
+									// Add the line
+									svg.append("path")
+										.datum(data)
+										.attr("fill", "none")
+										.attr("stroke", "#66c2a5")
+										.attr("stroke-width", 2.5)
+										.attr("stroke-dasharray", `0,${lC}`)
+										.attr("d", lineC)
+										.transition()
+											.delay(7000)
+											.duration(3000)
+											.ease(d3.easeLinear)
+											.attr("stroke-dasharray", `${lC},${lC}`);
+
+
+								})
+								seroByAgeChart3Loaded = 1;
+							}
 						}
 					},
 					exit: el => {
